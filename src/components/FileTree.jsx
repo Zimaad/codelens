@@ -12,7 +12,7 @@ const LANG_COLORS = {
   rs: '#f97316', rust: '#f97316',
   rb: '#ef4444', ruby: '#ef4444',
   java: '#f97316',
-  json: '#a78bfa', yaml: '#a78bfa', yml: '#a78bfa',
+  json: '#34d399', yaml: '#34d399', yml: '#34d399',
   md: '#8892a8', css: '#38bdf8', html: '#f97316',
   default: '#4f5b73',
 };
@@ -182,9 +182,9 @@ function FileNode({ file, depth, onFileSelect, isActive }) {
         className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs cursor-pointer transition-all duration-100"
         style={{
           paddingLeft: `${depth * 12 + 20}px`,
-          backgroundColor: isActive ? 'rgba(0, 255, 224, 0.06)' : 'transparent',
+          backgroundColor: isActive ? 'rgba(72, 229, 194, 0.06)' : 'transparent',
           color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
-          borderLeft: isActive ? '2px solid #00ffe0' : '2px solid transparent',
+          borderLeft: isActive ? '2px solid #48E5C2' : '2px solid transparent',
         }}
         onMouseEnter={(e) => {
           if (!isActive) {
@@ -245,7 +245,7 @@ export default function FileTree({ files = [], onFileSelect, activeFile = null }
             className="flex-1 bg-transparent outline-none text-xs"
             style={{
               color: 'var(--color-text-primary)',
-              caretColor: '#00ffe0',
+              caretColor: '#48E5C2',
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
             }}

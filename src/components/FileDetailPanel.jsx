@@ -160,7 +160,7 @@ export default function FileDetailPanel({ file, isOpen, onClose, onNavigateTo })
                       >
                         <div className="flex items-center justify-between mb-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-semibold" style={{ color: '#00ffe0', fontFamily: 'var(--font-mono)' }}>
+                            <span className="text-xs font-semibold" style={{ color: '#48E5C2', fontFamily: 'var(--font-mono)' }}>
                               {fn.name}
                             </span>
                             <span className="text-[10px]" style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
@@ -172,7 +172,7 @@ export default function FileDetailPanel({ file, isOpen, onClose, onNavigateTo })
                               L{fn.line}
                             </span>
                             {copiedLine === fn.name ? (
-                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00e5a0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
                               </svg>
                             ) : (
@@ -216,7 +216,7 @@ export default function FileDetailPanel({ file, isOpen, onClose, onNavigateTo })
                             >
                               <polyline points="9 18 15 12 9 6" />
                             </svg>
-                            <span className="text-xs font-semibold" style={{ color: '#6366f1', fontFamily: 'var(--font-mono)' }}>
+                            <span className="text-xs font-semibold" style={{ color: '#3178c6', fontFamily: 'var(--font-mono)' }}>
                               {cls.name}
                             </span>
                             <span className="text-[10px]" style={{ color: 'var(--color-text-muted)' }}>
@@ -254,9 +254,9 @@ export default function FileDetailPanel({ file, isOpen, onClose, onNavigateTo })
                           border: '1px solid var(--color-border-subtle)',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.borderColor = 'rgba(0,255,224,0.3)';
-                          e.currentTarget.style.color = '#00ffe0';
-                          e.currentTarget.style.backgroundColor = 'rgba(0,255,224,0.05)';
+                          e.currentTarget.style.borderColor = 'rgba(72, 229, 194,0.3)';
+                          e.currentTarget.style.color = '#48E5C2';
+                          e.currentTarget.style.backgroundColor = 'rgba(72, 229, 194,0.05)';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
@@ -303,7 +303,7 @@ function Section({ title, icon, count, children }) {
 
 function FileIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00ffe0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
       <polyline points="14 2 14 8 20 8" />
     </svg>

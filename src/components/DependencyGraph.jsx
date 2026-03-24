@@ -11,7 +11,7 @@ const LANG_COLORS = {
   javascript: '#eab308', js: '#eab308',
   typescript: '#2dd4bf', ts: '#2dd4bf', tsx: '#2dd4bf',
   go: '#10b981', rust: '#f97316', java: '#f97316', ruby: '#ef4444',
-  json: '#a78bfa', css: '#38bdf8', html: '#f97316',
+  json: '#34d399', css: '#38bdf8', html: '#f97316',
   default: '#4f5b73',
 };
 
@@ -28,7 +28,7 @@ function getColor(language) {
 }
 
 function getRadius(inDegree) {
-  return Math.max(8, Math.min(28, 8 + inDegree * 3));
+  return Math.max(12, Math.min(32, 12 + inDegree * 3));
 }
 
 export default function DependencyGraph({ nodes = [], edges = [], onNodeSelect }) {
@@ -86,20 +86,41 @@ export default function DependencyGraph({ nodes = [], edges = [], onNodeSelect }
 
     const defs = svg.append('defs');
     defs.append('marker').attr('id', 'arrowhead').attr('viewBox', '0 -5 10 10').attr('refX', 20).attr('refY', 0).attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto')
-      .append('path').attr('d', 'M0,-4L10,0L0,4').attr('fill', '#1c2232');
+      .append('path').attr('d', 'M0,-4L10,0L0,4').attr('fill', 'rgba(255,255,255,0.4)');
 
     defs.append('marker').attr('id', 'arrowhead-active').attr('viewBox', '0 -5 10 10').attr('refX', 20).attr('refY', 0).attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto')
-      .append('path').attr('d', 'M0,-4L10,0L0,4').attr('fill', '#00ffe0');
+      .append('path').attr('d', 'M0,-4L10,0L0,4').attr('fill', '#48E5C2');
 
     defs.append('marker').attr('id', 'arrowhead-dim').attr('viewBox', '0 -5 10 10').attr('refX', 20).attr('refY', 0).attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto')
-      .append('path').attr('d', 'M0,-4L10,0L0,4').attr('fill', '#0c0f16');
+      .append('path').attr('d', 'M0,-4L10,0L0,4').attr('fill', 'rgba(255,255,255,0.1)');
 
-    // Radial gradient for graph background
-    const bgGrad = defs.append('radialGradient').attr('id', 'graphBg').attr('cx', '50%').attr('cy', '50%').attr('r', '60%');
-    bgGrad.append('stop').attr('offset', '0%').attr('stop-color', '#0c0f16');
-    bgGrad.append('stop').attr('offset', '100%').attr('stop-color', '#06080c');
+    // Grid pattern for graphical background
+    const gridPattern = defs.append('pattern')
+      .attr('id', 'gridBg')
+      .attr('width', 60)
+      .attr('height', 60)
+      .attr('patternUnits', 'userSpaceOnUse');
+    
+    // Grid lines
+    gridPattern.append('line')
+      .attr('x1', 0).attr('y1', 0).attr('x2', 60).attr('y2', 0)
+      .attr('stroke', 'rgba(72, 229, 194, 0.05)')
+      .attr('stroke-width', 1);
+    
+    gridPattern.append('line')
+      .attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 60)
+      .attr('stroke', 'rgba(72, 229, 194, 0.05)')
+      .attr('stroke-width', 1);
 
     const g = svg.append('g').attr('class', 'graph-container');
+    
+    // Background rect holding the grid
+    g.append('rect')
+      .attr('width', width * 5)
+      .attr('height', height * 5)
+      .attr('x', -width * 2)
+      .attr('y', -height * 2)
+      .attr('fill', 'url(#gridBg)');
 
     const zoom = d3.zoom().scaleExtent([0.2, 4]).on('zoom', (event) => {
       g.attr('transform', event.transform);
@@ -113,17 +134,17 @@ export default function DependencyGraph({ nodes = [], edges = [], onNodeSelect }
 
     const simulation = d3
       .forceSimulation(simNodes)
-      .force('link', d3.forceLink(simEdges).id((d) => d.id).distance(100))
-      .force('charge', d3.forceManyBody().strength(-300))
+      .force('link', d3.forceLink(simEdges).id((d) => d.id).distance(120))
+      .force('charge', d3.forceManyBody().strength(-200))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide().radius((d) => getRadius(d.inDegree) + 4));
+      .force('collision', d3.forceCollide().radius((d) => getRadius(d.inDegree) + 12));
 
     simulationRef.current = simulation;
 
     const link = g.append('g').attr('class', 'links').selectAll('line').data(simEdges).join('line')
-      .attr('stroke', '#1c2232')
-      .attr('stroke-width', 1)
-      .attr('stroke-opacity', 0.5)
+      .attr('stroke', 'rgba(255,255,255,0.15)')
+      .attr('stroke-width', 2)
+      .attr('stroke-opacity', 1)
       .attr('marker-end', 'url(#arrowhead)');
 
     const nodeGroup = g.append('g').attr('class', 'nodes').selectAll('g').data(simNodes).join('g')
@@ -139,32 +160,55 @@ export default function DependencyGraph({ nodes = [], edges = [], onNodeSelect }
     nodeGroup.append('circle')
       .attr('r', (d) => getRadius(d.inDegree) + 4)
       .attr('fill', (d) => getColor(d.language))
-      .attr('fill-opacity', 0.06);
+      .attr('fill-opacity', 0.08);
 
     // Main circle
     nodeGroup.append('circle')
       .attr('r', (d) => getRadius(d.inDegree))
-      .attr('fill', (d) => getColor(d.language))
-      .attr('fill-opacity', 0.8)
+      .attr('fill', 'rgba(13, 17, 23, 0.95)')
       .attr('stroke', (d) => getColor(d.language))
-      .attr('stroke-width', 1.5)
-      .attr('stroke-opacity', 0.3);
+      .attr('stroke-width', 2);
 
-    // Inner highlight
-    nodeGroup.append('circle')
-      .attr('r', (d) => getRadius(d.inDegree) * 0.4)
-      .attr('fill', 'white')
-      .attr('fill-opacity', 0.08);
+    // Inner icon mapping
+    nodeGroup.each(function(d) {
+      const el = d3.select(this);
+      const lang = (d.language || '').toLowerCase();
+      const r = getRadius(d.inDegree);
+      
+      if (lang === 'folder') {
+         el.append('path')
+           .attr('d', "M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z")
+           .attr('fill', '#eab308')
+           .attr('transform', `translate(-12, -12) scale(${r > 18 ? 1.1 : 0.85})`)
+           .attr('pointer-events', 'none');
+      } else if (lang === 'js' || lang === 'javascript') {
+         el.append('circle').attr('r', r * 0.6).attr('fill', '#eab308').attr('pointer-events', 'none');
+         el.append('text').text('JS').attr('fill', 'black').attr('font-size', '10px').attr('font-weight', 'bold').attr('text-anchor', 'middle').attr('dy', '3.5px').attr('pointer-events', 'none');
+      } else if (lang === 'ts' || lang === 'typescript' || lang === 'tsx') {
+         el.append('circle').attr('r', r * 0.6).attr('fill', '#2dd4bf').attr('pointer-events', 'none');
+         el.append('text').text('TS').attr('fill', 'black').attr('font-size', '10px').attr('font-weight', 'bold').attr('text-anchor', 'middle').attr('dy', '3.5px').attr('pointer-events', 'none');
+      } else if (lang === 'py' || lang === 'python') {
+         el.append('circle').attr('r', r * 0.6).attr('fill', '#3b82f6').attr('pointer-events', 'none');
+         el.append('text').text('Py').attr('fill', 'white').attr('font-size', '10px').attr('font-weight', 'bold').attr('text-anchor', 'middle').attr('dy', '3.5px').attr('pointer-events', 'none');
+      } else {
+         el.append('path')
+           .attr('d', "M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z")
+           .attr('fill', getColor(lang))
+           .attr('opacity', 0.8)
+           .attr('transform', `translate(-10, -11) scale(${r > 18 ? 0.9 : 0.7})`)
+           .attr('pointer-events', 'none');
+      }
+    });
 
     // Labels
-    nodeGroup.filter((d) => d.inDegree > 2).append('text')
+    nodeGroup.append('text')
       .text((d) => d.label)
       .attr('text-anchor', 'middle')
-      .attr('dy', (d) => getRadius(d.inDegree) + 14)
-      .attr('font-size', '10px')
-      .attr('font-family', "'ClashDisplay', sans-serif")
+      .attr('dy', (d) => getRadius(d.inDegree) + 16)
+      .attr('font-size', '11px')
+      .attr('font-family', "'Inter', sans-serif")
       .attr('font-weight', '500')
-      .attr('fill', '#8892a8')
+      .attr('fill', '#e6edf3')
       .attr('pointer-events', 'none');
 
     nodeGroup.on('click', handleNodeClick);
@@ -184,7 +228,13 @@ export default function DependencyGraph({ nodes = [], edges = [], onNodeSelect }
       const y1 = Math.max(...ys) + 40;
       const bw = x1 - x0;
       const bh = y1 - y0;
-      const scale = Math.min(width / bw, height / bh, 1.5) * 0.85;
+      let scale = Math.min(width / bw, height / bh, 2.5) * 0.85;
+      
+      // Prevent it from zooming out too much if graph is huge
+      if (scale < 0.6) {
+        scale = 0.6;
+      }
+      
       const tx = width / 2 - ((x0 + x1) / 2) * scale;
       const ty = height / 2 - ((y0 + y1) / 2) * scale;
       svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
@@ -200,8 +250,8 @@ export default function DependencyGraph({ nodes = [], edges = [], onNodeSelect }
     if (!selectedNode) {
       svg.selectAll('.nodes g').attr('opacity', 1);
       svg.selectAll('.links line')
-        .attr('stroke', '#1c2232')
-        .attr('stroke-opacity', 0.5)
+        .attr('stroke', 'rgba(255,255,255,0.15)')
+        .attr('stroke-opacity', 1)
         .attr('marker-end', 'url(#arrowhead)');
       return;
     }
@@ -217,14 +267,14 @@ export default function DependencyGraph({ nodes = [], edges = [], onNodeSelect }
       .attr('stroke-opacity', (d) => {
         const sid = typeof d.source === 'object' ? d.source.id : d.source;
         const tid = typeof d.target === 'object' ? d.target.id : d.target;
-        if (sid === selectedNode || tid === selectedNode) return 0.8;
+        if (sid === selectedNode || tid === selectedNode) return 1;
         return 0.05;
       })
       .attr('stroke', (d) => {
         const sid = typeof d.source === 'object' ? d.source.id : d.source;
         const tid = typeof d.target === 'object' ? d.target.id : d.target;
-        if (sid === selectedNode || tid === selectedNode) return '#00ffe0';
-        return '#0c0f16';
+        if (sid === selectedNode || tid === selectedNode) return '#48E5C2';
+        return 'rgba(255,255,255,0.1)';
       })
       .attr('marker-end', (d) => {
         const sid = typeof d.source === 'object' ? d.source.id : d.source;

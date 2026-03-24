@@ -60,8 +60,8 @@ export default function AnalysisLoading({
           className="h-full transition-all duration-700 ease-out"
           style={{
             width: `${progress}%`,
-            background: 'linear-gradient(90deg, #00ffe0, #6366f1)',
-            boxShadow: '0 0 20px rgba(0, 255, 224, 0.4)',
+            background: 'linear-gradient(90deg, #48E5C2, #3178c6)',
+            boxShadow: '0 0 20px rgba(72, 229, 194, 0.4)',
           }}
         />
       </div>
@@ -71,7 +71,7 @@ export default function AnalysisLoading({
         className="fixed inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 600px 400px at 50% 30%, rgba(0, 255, 224, 0.04), transparent),
+            radial-gradient(ellipse 600px 400px at 50% 30%, rgba(72, 229, 194, 0.04), transparent),
             radial-gradient(ellipse 400px 300px at 70% 70%, rgba(99, 102, 241, 0.03), transparent)
           `,
         }}
@@ -94,7 +94,7 @@ export default function AnalysisLoading({
               <div
                 className="absolute inset-0 rounded-full"
                 style={{
-                  background: `conic-gradient(from 0deg, #00ffe0, #6366f1, #a78bfa, #00ffe0)`,
+                  background: `conic-gradient(from 0deg, #48E5C2, #3178c6, #34d399, #48E5C2)`,
                   opacity: isComplete ? 0 : 0.25,
                   animation: isComplete ? 'none' : 'spin-slow 2.5s linear infinite',
                   transition: 'opacity 0.5s ease',
@@ -106,16 +106,16 @@ export default function AnalysisLoading({
                 className="absolute inset-[3px] rounded-full flex items-center justify-center"
                 style={{
                   backgroundColor: 'var(--color-bg-primary)',
-                  border: isComplete ? '2px solid rgba(0,229,160,0.3)' : '2px solid rgba(0,255,224,0.1)',
+                  border: isComplete ? '2px solid rgba(0,229,160,0.3)' : '2px solid rgba(72, 229, 194,0.1)',
                   transition: 'border-color 0.5s ease',
                 }}
               >
                 {isComplete ? (
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00e5a0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 ) : (
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00ffe0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="16 18 22 12 16 6" />
                     <polyline points="8 6 2 12 8 18" />
                     <line x1="14" y1="4" x2="10" y2="20" />
@@ -127,7 +127,7 @@ export default function AnalysisLoading({
                 className="absolute inset-0 -z-10"
                 style={{
                   borderRadius: '50%',
-                  background: 'radial-gradient(circle, rgba(0,255,224,0.1) 0%, transparent 70%)',
+                  background: 'radial-gradient(circle, rgba(72, 229, 194,0.1) 0%, transparent 70%)',
                   filter: 'blur(24px)',
                   transform: 'scale(2.5)',
                   opacity: isComplete ? 0 : 1,
@@ -175,7 +175,7 @@ export default function AnalysisLoading({
                   key={index}
                   className="flex items-center gap-3.5 px-5 py-3.5 transition-all duration-300"
                   style={{
-                    backgroundColor: isActive ? 'rgba(0, 255, 224, 0.04)' : 'transparent',
+                    backgroundColor: isActive ? 'rgba(72, 229, 194, 0.04)' : 'transparent',
                     borderBottom: index < steps.length - 1 ? '1px solid var(--color-border-subtle)' : 'none',
                     opacity: isPending ? 0.3 : 1,
                     animation: mounted ? `fadeIn 0.5s ease-out ${index * 120}ms both` : 'none',
@@ -191,24 +191,24 @@ export default function AnalysisLoading({
                       backgroundColor: isDone
                         ? 'rgba(0, 229, 160, 0.1)'
                         : isActive
-                        ? 'rgba(0, 255, 224, 0.1)'
+                        ? 'rgba(72, 229, 194, 0.1)'
                         : 'rgba(79, 91, 115, 0.1)',
                       color: isDone
-                        ? '#00e5a0'
+                        ? '#9333ea'
                         : isActive
-                        ? '#00ffe0'
+                        ? '#48E5C2'
                         : 'var(--color-text-muted)',
                     }}
                   >
                     {isDone ? (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00e5a0" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9333ea" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     ) : isActive ? (
                       <div className="relative flex items-center justify-center" style={{ width: '16px', height: '16px' }}>
                         <svg className="w-4 h-4" viewBox="0 0 24 24" style={{ animation: 'spin-slow 1s linear infinite' }}>
-                          <circle cx="12" cy="12" r="10" fill="none" stroke="rgba(0,255,224,0.15)" strokeWidth="2.5" />
-                          <circle cx="12" cy="12" r="10" fill="none" stroke="#00ffe0" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="50 100" />
+                          <circle cx="12" cy="12" r="10" fill="none" stroke="rgba(72, 229, 194,0.15)" strokeWidth="2.5" />
+                          <circle cx="12" cy="12" r="10" fill="none" stroke="#48E5C2" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="50 100" />
                         </svg>
                       </div>
                     ) : (
@@ -222,7 +222,7 @@ export default function AnalysisLoading({
                     style={{
                       fontFamily: 'var(--font-display)',
                       color: isDone
-                        ? '#00e5a0'
+                        ? '#9333ea'
                         : isActive
                         ? 'var(--color-text-primary)'
                         : 'var(--color-text-muted)',
@@ -241,7 +241,7 @@ export default function AnalysisLoading({
                           style={{
                             width: '3px',
                             height: '3px',
-                            backgroundColor: '#00ffe0',
+                            backgroundColor: '#48E5C2',
                             animation: `chatPulse 1.4s ease-in-out ${i * 0.2}s infinite`,
                           }}
                         />
@@ -267,7 +267,7 @@ export default function AnalysisLoading({
               className="text-sm font-semibold font-mono"
               style={{
                 fontFamily: 'var(--font-mono)',
-                color: isComplete ? '#00e5a0' : '#00ffe0',
+                color: isComplete ? '#9333ea' : '#48E5C2',
               }}
             >
               {Math.round(progress)}%

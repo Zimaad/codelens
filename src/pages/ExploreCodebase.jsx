@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import FileTree from '../components/FileTree';
 import DependencyGraph from '../components/DependencyGraph';
 import FileDetailPanel from '../components/FileDetailPanel';
@@ -217,15 +217,59 @@ let currentKeyIndex = 0;
 
 export default function ExploreCodebase() {
   const { owner, repo } = useParams();
+  const location = useLocation();
+  const currentView = new URLSearchParams(location.search).get('view') || 'overview';
 
   // --- State ---
-  const [repoFiles, setRepoFiles] = useState(SAMPLE_FILES);
+  const [repoFiles, setRepoFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [detailFile, setDetailFile] = useState(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('graph');
   const [chatMessages, setChatMessages] = useState([]);
   const [chatLoading, setChatLoading] = useState(false);
+  const [repoReadme, setRepoReadme] = useState('');
+
+  // --- Graph Generation ---
+  const graphData = useMemo(() => {
+    const nodesMap = new Map();
+    const edgesMap = new Set();
+    const edges = [];
+    
+    const maxFiles = repoFiles.slice(0, 150);
+    
+    for (const file of maxFiles) {
+      const parts = file.path.split('/');
+      let currentPath = '';
+      for (let i = 0; i < parts.length; i++) {
+        const isFile = i === parts.length - 1;
+        const part = parts[i];
+        const prevPath = currentPath;
+        currentPath = currentPath ? `${currentPath}/${part}` : part;
+        
+        if (!nodesMap.has(currentPath)) {
+          if (nodesMap.size > 250) break;
+          nodesMap.set(currentPath, {
+            id: currentPath,
+            label: part,
+            language: isFile ? file.language || 'text' : 'folder',
+            inDegree: 0,
+            isFile
+          });
+        }
+        
+        if (prevPath) {
+          const edgeId = `${prevPath}->${currentPath}`;
+          if (!edgesMap.has(edgeId)) {
+             edgesMap.add(edgeId);
+             edges.push({ source: prevPath, target: currentPath });
+             const targetNode = nodesMap.get(currentPath);
+             if (targetNode) targetNode.inDegree += 1;
+          }
+        }
+      }
+    }
+    return { nodes: Array.from(nodesMap.values()), edges };
+  }, [repoFiles]);
 
   useEffect(() => {
     if (!owner || !repo) return;
@@ -238,6 +282,19 @@ export default function ExploreCodebase() {
         const treeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${repoInfo.default_branch}?recursive=1`);
         if (!treeRes.ok) throw new Error('Tree not found');
         const treeInfo = await treeRes.json();
+        
+        try {
+          const readmeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/readme`, {
+            headers: { Accept: 'application/vnd.github.v3.raw' }
+          });
+          if (readmeRes.ok) {
+            setRepoReadme(await readmeRes.text());
+          } else {
+            setRepoReadme(repoInfo.description || '');
+          }
+        } catch (e) {
+          setRepoReadme(repoInfo.description || '');
+        }
         
         if (treeInfo.tree) {
           const fetchedFiles = treeInfo.tree
@@ -303,13 +360,17 @@ export default function ExploreCodebase() {
     setChatLoading(true);
 
     const latestMessages = [...chatMessages, newUserMsg];
+    
+    const filePaths = repoFiles.map(f => f.path).slice(0, 100).join('\n');
+    const contextStr = repoReadme ? `\n\nREADME or Description:\n${repoReadme.substring(0, 3000)}` : '';
+    
     const apiMessages = [
-      { role: 'system', content: `You are a helpful codebase explainer AI for a developer. The user is asking about the ${owner}/${repo} repository. The repository contains ${repoFiles.length} files. Provide clear, technical, and concise answers.` },
+      { role: 'system', content: `You are a codebase explainer AI. The user is asking about the ${owner}/${repo} repository. The repository contains ${repoFiles.length} files.\n\nHere are some of the tracked files:\n${filePaths}${contextStr}\n\nProvide clear, technical, and concise answers based on the context provided.` },
       ...latestMessages.map(m => ({
         role: m.role === 'ai' ? 'assistant' : 'user',
         content: m.text
       }))
-    ];
+    ].filter(m => m.content && m.content.trim().length > 0);
 
     try {
       if (GROQ_KEYS.length === 0) {
@@ -327,14 +388,15 @@ export default function ExploreCodebase() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'llama3-8b-8192',
+          model: 'llama-3.1-8b-instant',
           messages: apiMessages,
           stream: false // Using non-streaming for simplicity and reliability with basic fetch, wait, I can simulate streaming or just show it instantly.
         })
       });
 
       if (!res.ok) {
-        throw new Error(`Groq API Error: ${res.status}`);
+        const errorText = await res.text();
+        throw new Error(`Groq API Error ${res.status}: ${errorText}`);
       }
 
       const data = await res.json();
@@ -375,12 +437,6 @@ export default function ExploreCodebase() {
     }
   }, [chatMessages, owner, repo, repoFiles.length]);
 
-  // --- Tabs config ---
-  const tabs = [
-    { id: 'graph', label: 'Dependency Graph', icon: GraphTabIcon },
-    { id: 'chat', label: 'Chat', icon: ChatTabIcon },
-  ];
-
   // --- Render ---
   return (
     <div className="flex h-full animate-fade-in" style={{ backgroundColor: 'var(--color-bg-primary)' }}>
@@ -416,66 +472,36 @@ export default function ExploreCodebase() {
                 {owner}/{repo}
               </h1>
               <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>
-                {repoFiles.length} files analyzed · {GRAPH_EDGES.length} dependencies mapped
+                {repoFiles.length} files analyzed · {graphData.edges.length} dependencies mapped
               </p>
             </div>
             <span
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-wider"
               style={{
                 backgroundColor: 'rgba(0, 229, 160, 0.06)',
-                color: '#00e5a0',
+                color: '#9333ea',
                 border: '1px solid rgba(0, 229, 160, 0.15)',
                 fontFamily: 'var(--font-display)',
               }}
             >
-              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#00e5a0' }} />
+              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#9333ea' }} />
               Analyzed
             </span>
           </div>
-
-          <div className="flex gap-1" style={{ borderBottom: '1px solid var(--color-border-subtle)' }}>
-            {tabs.map((tab) => {
-              const isActive = activeTab === tab.id;
-              const TabIcon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  id={`tab-${tab.id}`}
-                  className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-all duration-200 cursor-pointer"
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    color: isActive ? '#00ffe0' : 'var(--color-text-muted)',
-                    borderBottom: isActive ? '2px solid #00ffe0' : '2px solid transparent',
-                    marginBottom: '-1px',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isActive) e.currentTarget.style.color = 'var(--color-text-primary)';
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isActive) e.currentTarget.style.color = 'var(--color-text-muted)';
-                  }}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  <TabIcon />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
         </div>
 
-        {/* Tab content */}
-        {activeTab === 'graph' ? (
+        {/* Dynamic content area */}
+        {currentView === 'dependencies' || currentView === 'architecture' ? (
           <div className="flex-1 p-5" style={{ minHeight: 0 }}>
             <div className="w-full h-full" style={{ minHeight: '400px' }}>
               <DependencyGraph
-                nodes={GRAPH_NODES}
-                edges={GRAPH_EDGES}
+                nodes={graphData.nodes}
+                edges={graphData.edges}
                 onNodeSelect={handleGraphNodeSelect}
               />
             </div>
           </div>
-        ) : (
+        ) : currentView === 'insights' ? (
           <div className="flex-1" style={{ minHeight: 0 }}>
             <ChatInterface
               messages={chatMessages}
@@ -483,6 +509,25 @@ export default function ExploreCodebase() {
               onNavigateTo={handleChatNavigate}
               isLoading={chatLoading}
             />
+          </div>
+        ) : (
+          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center animate-fade-in" style={{ minHeight: 0 }}>
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, rgba(72, 229, 194,0.1), rgba(99,102,241,0.1))', border: '1px solid rgba(72, 229, 194,0.2)' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+              {currentView === 'overview' ? 'Repository Overview' : 'File Explorer View'}
+            </h2>
+            <p className="text-sm max-w-sm mb-6" style={{ color: 'var(--color-text-muted)' }}>
+              Repository <strong>{owner}/{repo}</strong> loaded successfully with {repoFiles.length} files.
+              <br/><br/>
+              Select a file from the sidebar to view details, or navigate to Dependencies or AI Insights.
+            </p>
           </div>
         )}
       </div>

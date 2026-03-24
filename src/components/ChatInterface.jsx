@@ -40,7 +40,7 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
   }, [canSend, input, onSendMessage]);
 
   const handleKeyDown = (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
@@ -59,8 +59,8 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
               style={{
-                background: 'linear-gradient(135deg, rgba(0,255,224,0.08), rgba(99,102,241,0.08))',
-                border: '1px solid rgba(0,255,224,0.1)',
+                background: 'linear-gradient(135deg, rgba(72, 229, 194,0.08), rgba(99,102,241,0.08))',
+                border: '1px solid rgba(72, 229, 194,0.1)',
               }}
             >
               <BrainIcon />
@@ -98,9 +98,9 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
                   border: '1px solid var(--color-border-subtle)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0,255,224,0.25)';
-                  e.currentTarget.style.color = '#00ffe0';
-                  e.currentTarget.style.backgroundColor = 'rgba(0,255,224,0.04)';
+                  e.currentTarget.style.borderColor = 'rgba(72, 229, 194,0.25)';
+                  e.currentTarget.style.color = '#48E5C2';
+                  e.currentTarget.style.backgroundColor = 'rgba(72, 229, 194,0.04)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
@@ -142,7 +142,7 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
               style={{
                 fontFamily: 'var(--font-display)',
                 color: 'rgba(255, 255, 255, 0.9)',
-                caretColor: '#00ffe0',
+                caretColor: '#48E5C2',
                 lineHeight: '24px',
                 minHeight: '60px',
                 maxHeight: `${5 * 24}px`,
@@ -207,25 +207,25 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer"
               style={{
                 fontFamily: 'var(--font-display)',
-                backgroundColor: canSend ? '#00ffe0' : 'rgba(255, 255, 255, 0.05)',
-                color: canSend ? '#06080c' : 'rgba(255, 255, 255, 0.35)',
-                boxShadow: canSend ? '0 4px 16px rgba(0, 255, 224, 0.15)' : 'none',
+                backgroundColor: canSend ? '#48E5C2' : 'rgba(255, 255, 255, 0.05)',
+                color: canSend ? '#0f172a' : 'rgba(255, 255, 255, 0.35)',
+                boxShadow: canSend ? '0 4px 16px rgba(72, 229, 194, 0.15)' : 'none',
               }}
               disabled={!canSend}
               onClick={handleSend}
               onMouseEnter={(e) => {
                 if (canSend) {
-                  e.currentTarget.style.boxShadow = '0 6px 24px rgba(0, 255, 224, 0.25)';
+                  e.currentTarget.style.boxShadow = '0 6px 24px rgba(72, 229, 194, 0.25)';
                   e.currentTarget.style.transform = 'scale(1.02)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (canSend) {
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 255, 224, 0.15)';
+                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(72, 229, 194, 0.15)';
                   e.currentTarget.style.transform = 'scale(1)';
                 }
               }}
-              title="Send (Ctrl+Enter)"
+              title="Send (Enter)"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13" />
@@ -250,11 +250,11 @@ function MessageBubble({ message, onNavigateTo }) {
         <div
           className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
           style={{
-            background: 'linear-gradient(135deg, rgba(0,255,224,0.1), rgba(99,102,241,0.1))',
-            border: '1px solid rgba(0,255,224,0.1)',
+            background: 'linear-gradient(135deg, rgba(72, 229, 194,0.1), rgba(99,102,241,0.1))',
+            border: '1px solid rgba(72, 229, 194,0.1)',
           }}
         >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00ffe0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 2L2 7l10 5 10-5-10-5z" />
             <path d="M2 17l10 5 10-5" />
             <path d="M2 12l10 5 10-5" />
@@ -268,9 +268,9 @@ function MessageBubble({ message, onNavigateTo }) {
           style={
             isUser
               ? {
-                  background: 'linear-gradient(135deg, rgba(0,255,224,0.12), rgba(99,102,241,0.12))',
+                  background: 'linear-gradient(135deg, rgba(72, 229, 194,0.12), rgba(99,102,241,0.12))',
                   color: 'var(--color-text-primary)',
-                  border: '1px solid rgba(0,255,224,0.15)',
+                  border: '1px solid rgba(72, 229, 194,0.15)',
                   borderBottomRightRadius: '4px',
                   fontFamily: 'var(--font-display)',
                 }
@@ -299,17 +299,17 @@ function MessageBubble({ message, onNavigateTo }) {
                 className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] transition-all duration-100 cursor-pointer"
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  backgroundColor: 'rgba(0, 255, 224, 0.04)',
-                  color: '#00ffe0',
-                  border: '1px solid rgba(0, 255, 224, 0.1)',
+                  backgroundColor: 'rgba(72, 229, 194, 0.04)',
+                  color: '#48E5C2',
+                  border: '1px solid rgba(72, 229, 194, 0.1)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(0, 255, 224, 0.1)';
-                  e.currentTarget.style.borderColor = 'rgba(0, 255, 224, 0.25)';
+                  e.currentTarget.style.backgroundColor = 'rgba(72, 229, 194, 0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(72, 229, 194, 0.25)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(0, 255, 224, 0.04)';
-                  e.currentTarget.style.borderColor = 'rgba(0, 255, 224, 0.1)';
+                  e.currentTarget.style.backgroundColor = 'rgba(72, 229, 194, 0.04)';
+                  e.currentTarget.style.borderColor = 'rgba(72, 229, 194, 0.1)';
                 }}
                 onClick={() => onNavigateTo?.(cite.file, cite.line)}
                 title={`${cite.file}:${cite.line}`}
@@ -333,7 +333,7 @@ function renderLine(line) {
   return parts.map((part, i) => {
     if (part.startsWith('`') && part.endsWith('`')) {
       return (
-        <code key={i} className="px-1 py-0.5 rounded text-[12px]" style={{ fontFamily: 'var(--font-mono)', backgroundColor: 'rgba(0,255,224,0.06)', color: '#00ffe0' }}>
+        <code key={i} className="px-1 py-0.5 rounded text-[12px]" style={{ fontFamily: 'var(--font-mono)', backgroundColor: 'rgba(72, 229, 194,0.06)', color: '#48E5C2' }}>
           {part.slice(1, -1)}
         </code>
       );
@@ -354,11 +354,11 @@ function ThinkingIndicator() {
       <div
         className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
         style={{
-          background: 'linear-gradient(135deg, rgba(0,255,224,0.1), rgba(99,102,241,0.1))',
-          border: '1px solid rgba(0,255,224,0.1)',
+          background: 'linear-gradient(135deg, rgba(72, 229, 194,0.1), rgba(99,102,241,0.1))',
+          border: '1px solid rgba(72, 229, 194,0.1)',
         }}
       >
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00ffe0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2L2 7l10 5 10-5-10-5z" />
           <path d="M2 17l10 5 10-5" />
           <path d="M2 12l10 5 10-5" />
@@ -385,7 +385,7 @@ function PulseDot({ delay }) {
     <div
       className="w-2 h-2 rounded-full"
       style={{
-        backgroundColor: '#00ffe0',
+        backgroundColor: '#48E5C2',
         animation: `chatPulse 1.4s ease-in-out infinite`,
         animationDelay: `${delay}ms`,
       }}
@@ -395,7 +395,7 @@ function PulseDot({ delay }) {
 
 function BrainIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ffe0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 2L2 7l10 5 10-5-10-5z" />
       <path d="M2 17l10 5 10-5" />
       <path d="M2 12l10 5 10-5" />
