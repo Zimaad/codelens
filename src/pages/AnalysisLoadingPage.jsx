@@ -23,9 +23,10 @@ const STEP_DURATIONS = [1200, 1000, 1400, 1800, 1600, 1400];
 export default function AnalysisLoadingPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { repoUrl, repoId } = location.state || {
+  const { repoUrl, owner, repo } = location.state || {
     repoUrl: 'https://github.com/example/repo',
-    repoId: 'example-repo',
+    owner: 'example',
+    repo: 'repo',
   };
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -42,8 +43,8 @@ export default function AnalysisLoadingPage() {
   }, [currentStep]);
 
   const handleComplete = useCallback(() => {
-    navigate(`/explore/${repoId}`, { replace: true });
-  }, [navigate, repoId]);
+    navigate(`/explore/${owner}/${repo}`, { replace: true });
+  }, [navigate, owner, repo]);
 
   return (
     <AnalysisLoading

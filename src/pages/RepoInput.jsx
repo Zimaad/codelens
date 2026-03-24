@@ -47,12 +47,10 @@ export default function RepoInput() {
       return;
     }
     setError('');
-    const repoId = repoUrl
-      .replace(/https?:\/\/(www\.)?github\.com\//, '')
-      .replace(/\.git$/, '')
-      .replace(/\/$/, '')
-      .replace(/\//g, '-');
-    navigate('/loading', { state: { repoUrl: repoUrl.trim(), repoId } });
+    const match = repoUrl.trim().match(/github\.com\/([^/]+)\/([^/]+)/);
+    const owner = match ? match[1] : 'example';
+    const repo = match ? match[2].replace(/\.git$/, '').replace(/\/$/, '') : 'repo';
+    navigate('/loading', { state: { repoUrl: repoUrl.trim(), owner, repo } });
   };
 
   const handleExampleClick = (slug) => {

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import FileTree from '../components/FileTree';
 import DependencyGraph from '../components/DependencyGraph';
@@ -207,16 +207,59 @@ const SIMULATED_RESPONSES = {
    EXPLORE CODEBASE PAGE
    ========================================================================== */
 
+const GROQ_KEYS = [
+  import.meta.env.VITE_GROQ_API_KEY1,
+  import.meta.env.VITE_GROQ_API_KEY2,
+  import.meta.env.VITE_GROQ_API_KEY3,
+].filter(Boolean);
+
+let currentKeyIndex = 0;
+
 export default function ExploreCodebase() {
-  const { repoId } = useParams();
+  const { owner, repo } = useParams();
 
   // --- State ---
+  const [repoFiles, setRepoFiles] = useState(SAMPLE_FILES);
   const [selectedFile, setSelectedFile] = useState(null);
   const [detailFile, setDetailFile] = useState(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('graph');
   const [chatMessages, setChatMessages] = useState([]);
   const [chatLoading, setChatLoading] = useState(false);
+
+  useEffect(() => {
+    if (!owner || !repo) return;
+    async function fetchRepoTree() {
+      try {
+        const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+        if (!repoRes.ok) throw new Error('Repo not found');
+        const repoInfo = await repoRes.json();
+        
+        const treeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${repoInfo.default_branch}?recursive=1`);
+        if (!treeRes.ok) throw new Error('Tree not found');
+        const treeInfo = await treeRes.json();
+        
+        if (treeInfo.tree) {
+          const fetchedFiles = treeInfo.tree
+            .filter((node) => node.type === 'blob')
+            .map((node) => {
+              const parts = node.path.split('.');
+              const ext = parts.length > 1 ? parts[parts.length - 1] : '';
+              return {
+                path: node.path,
+                summary: 'Fetched file from GitHub.',
+                language: ext || 'unknown',
+                importance: 'low',
+              };
+            });
+          setRepoFiles(fetchedFiles);
+        }
+      } catch (err) {
+        console.error('Failed to fetch github data', err);
+      }
+    }
+    fetchRepoTree();
+  }, [owner, repo]);
 
   // --- Handlers ---
   const selectFile = useCallback((filePath) => {
@@ -226,7 +269,7 @@ export default function ExploreCodebase() {
       setDetailFile(detail);
       setIsDetailOpen(true);
     } else {
-      const basic = SAMPLE_FILES.find((f) => f.path === filePath);
+      const basic = repoFiles.find((f) => f.path === filePath);
       if (basic) {
         setDetailFile({ ...basic, functions: [], classes: [], imports: [] });
         setIsDetailOpen(true);
@@ -254,46 +297,83 @@ export default function ExploreCodebase() {
     selectFile(file);
   }, [selectFile]);
 
-  const handleSendMessage = useCallback((text) => {
-    setChatMessages((prev) => [...prev, { role: 'user', text }]);
+  const handleSendMessage = useCallback(async (text) => {
+    const newUserMsg = { role: 'user', text };
+    setChatMessages((prev) => [...prev, newUserMsg]);
     setChatLoading(true);
 
-    const response = SIMULATED_RESPONSES[text] || {
-      text: `I analyzed the codebase to answer: "${text}". Based on the repo structure, this involves the \`api.ts\` utility module and the authentication layer. Let me know if you'd like me to dig deeper.`,
-      citations: [
-        { file: 'src/utils/api.ts', line: 12 },
-        { file: 'src/hooks/useAuth.ts', line: 15 },
-      ],
-    };
+    const latestMessages = [...chatMessages, newUserMsg];
+    const apiMessages = [
+      { role: 'system', content: `You are a helpful codebase explainer AI for a developer. The user is asking about the ${owner}/${repo} repository. The repository contains ${repoFiles.length} files. Provide clear, technical, and concise answers.` },
+      ...latestMessages.map(m => ({
+        role: m.role === 'ai' ? 'assistant' : 'user',
+        content: m.text
+      }))
+    ];
 
-    const fullText = response.text;
-    const words = fullText.split(' ');
-    let current = '';
-    let idx = 0;
-
-    const streamingMsg = { role: 'ai', text: '', citations: [] };
-    setChatMessages((prev) => [...prev, streamingMsg]);
-
-    const interval = setInterval(() => {
-      if (idx < words.length) {
-        current += (idx > 0 ? ' ' : '') + words[idx];
-        idx++;
-        setChatMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = { ...streamingMsg, text: current };
-          return updated;
-        });
-      } else {
-        clearInterval(interval);
-        setChatMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = { role: 'ai', text: fullText, citations: response.citations };
-          return updated;
-        });
-        setChatLoading(false);
+    try {
+      if (GROQ_KEYS.length === 0) {
+        throw new Error('No Groq API keys found. Please add them to the .env file.');
       }
-    }, 40);
-  }, []);
+      
+      const apiKey = GROQ_KEYS[currentKeyIndex];
+      // Rotate key
+      currentKeyIndex = (currentKeyIndex + 1) % GROQ_KEYS.length;
+
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama3-8b-8192',
+          messages: apiMessages,
+          stream: false // Using non-streaming for simplicity and reliability with basic fetch, wait, I can simulate streaming or just show it instantly.
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error(`Groq API Error: ${res.status}`);
+      }
+
+      const data = await res.json();
+      const content = data.choices[0]?.message?.content || '';
+
+      const words = content.split(' ');
+      let current = '';
+      let idx = 0;
+
+      const streamingMsg = { role: 'ai', text: '', citations: [] };
+      setChatMessages((prev) => [...prev, streamingMsg]);
+
+      // Simple pseudo-streaming so the UI still looks cool
+      const interval = setInterval(() => {
+        if (idx < words.length) {
+          current += (idx > 0 ? ' ' : '') + words[idx];
+          idx++;
+          setChatMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { ...streamingMsg, text: current };
+            return updated;
+          });
+        } else {
+          clearInterval(interval);
+          setChatMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { role: 'ai', text: content, citations: [] };
+            return updated;
+          });
+          setChatLoading(false);
+        }
+      }, 30);
+
+    } catch (err) {
+      console.error(err);
+      setChatMessages((prev) => [...prev, { role: 'ai', text: `Error: ${err.message}`, citations: [] }]);
+      setChatLoading(false);
+    }
+  }, [chatMessages, owner, repo, repoFiles.length]);
 
   // --- Tabs config ---
   const tabs = [
@@ -313,7 +393,7 @@ export default function ExploreCodebase() {
         }}
       >
         <FileTree
-          files={SAMPLE_FILES}
+          files={repoFiles}
           onFileSelect={handleTreeFileSelect}
           activeFile={selectedFile}
         />
@@ -333,10 +413,10 @@ export default function ExploreCodebase() {
                   letterSpacing: '-0.02em',
                 }}
               >
-                {repoId?.replace(/-/g, '/')}
+                {owner}/{repo}
               </h1>
               <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>
-                {SAMPLE_FILES.length} files analyzed · {GRAPH_EDGES.length} dependencies mapped
+                {repoFiles.length} files analyzed · {GRAPH_EDGES.length} dependencies mapped
               </p>
             </div>
             <span

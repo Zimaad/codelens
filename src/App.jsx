@@ -10,7 +10,7 @@ export default function App() {
       <Route path="/" element={<RepoInput />} />
       <Route path="/loading" element={<AnalysisLoadingPage />} />
       <Route
-        path="/explore/:repoId"
+        path="/explore/:owner/:repo"
         element={
           <ExploreLayout>
             <ExploreCodebase />
