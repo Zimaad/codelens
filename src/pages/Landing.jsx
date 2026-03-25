@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GlobePulse } from '../components/ui/cobe-globe-pulse';
 
 export default function Landing() {
   const [mounted, setMounted] = useState(false);
@@ -40,27 +41,16 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen w-screen flex flex-col relative font-sans bg-[#0B1215] text-white noise-overlay">
-      {/* Background Grid */}
-      <style>{`
-        .bg-grid {
-          background-image: 
-            linear-gradient(rgba(72, 229, 194, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(72, 229, 194, 0.03) 1px, transparent 1px);
-          background-size: 64px 64px;
-          /* Keep the grid pattern visually centered with the hero layout */
-          background-position: 50% 0%;
-        }
-        .radial-glow {
-          background: radial-gradient(circle at 50% 50%, rgba(72, 229, 194, 0.08) 0%, transparent 70%);
-        }
-      `}</style>
-      
-      <div className="absolute inset-0 bg-grid pointer-events-none z-0" />
-      <div className="absolute inset-0 radial-glow pointer-events-none z-0" />
+    <div className="min-h-screen w-full flex flex-col items-center relative font-sans bg-[#0B1215] text-white noise-overlay">
+      {/* Rotating globe background (replaces the old grid/radial background) */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <GlobePulse className="w-[170vmax] max-w-none opacity-90" />
+        </div>
+      </div>
 
       {/* Header */}
-      <header className="flex items-center px-8 md:px-12 py-8 max-w-7xl mx-auto relative z-20">
+      <header className="flex items-center px-8 md:px-12 py-8 w-full max-w-7xl mx-auto relative z-20">
         <div className="flex-1 flex items-center gap-3">
           <svg className="w-8 h-8 text-brand-cyan" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2a10 10 0 0 1 8 4" />
@@ -87,7 +77,7 @@ export default function Landing() {
       </header>
 
       {/* Hero */}
-      <main className="relative z-10 max-w-7xl px-8 pt-32 pb-20 md:pt-48 md:pb-32 flex flex-col items-center mx-auto text-center min-h-screen">
+      <main className="relative z-10 w-full max-w-7xl px-8 pt-32 pb-20 md:pt-48 md:pb-32 flex flex-col items-center mx-auto text-center min-h-screen">
         <div 
           className={`transition-all duration-[1500ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'} flex flex-col items-center`}
         >
@@ -110,7 +100,7 @@ export default function Landing() {
             and visualize complex systems at the speed of thought.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-40">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <button 
               onClick={() => navigate('/repoinput')}
               className="group relative px-12 py-5 bg-brand-cyan text-black font-black text-[11px] uppercase tracking-[0.3em] rounded-full hover:bg-white hover:scale-105 transition-all shadow-2xl shadow-brand-cyan/20 overflow-hidden"
@@ -123,51 +113,9 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Visual Showcase (Fake UI) */}
-        <div 
-          className={`w-full max-w-5xl aspect-video rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl relative overflow-hidden transition-all duration-[2000ms] delay-500 shadow-2xl ${mounted ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-40 scale-95'}`}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-brand-cyan/5 via-transparent to-brand-cyan/5" />
-          
-          {/* Mock Header */}
-          <div className="absolute top-0 inset-x-0 h-14 border-b border-white/5 flex items-center px-6 gap-2 bg-white/[0.02]">
-            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-            <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-            <div className="ml-4 h-4 w-32 bg-white/5 rounded-full" />
-          </div>
-
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-             {/* Fake Graph Visual */}
-             <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
-                <div className="absolute inset-0 border border-brand-cyan/20 rounded-full animate-spin-slow" />
-                <div className="absolute inset-4 border border-brand-cyan/10 rounded-full animate-[spin-slow_4s_linear_infinite_reverse]" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                   <div className="w-32 h-32 md:w-48 lg:w-64 bg-brand-cyan/10 blur-[80px] animate-pulse" />
-                   <div className="w-4 h-4 bg-brand-cyan rounded-full shadow-[0_0_20px_#48E5C2]" />
-                </div>
-                {/* Random particles/nodes */}
-                <div className="absolute top-10 left-1/2 w-2.5 h-2.5 bg-brand-cyan/40 rounded-full blur-[1px]" />
-                <div className="absolute bottom-20 right-10 w-2.5 h-2.5 bg-brand-cyan/40 rounded-full blur-[1px]" />
-                <div className="absolute bottom-10 left-20 w-2.5 h-2.5 bg-brand-cyan/40 rounded-full blur-[1px]" />
-                <div className="absolute top-1/4 right-1/4 w-2.5 h-2.5 bg-brand-cyan/40 rounded-full blur-[1px]" />
-             </div>
-          </div>
-
-          <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end">
-            <div className="flex flex-col gap-3">
-              <div className="h-3 w-48 bg-brand-cyan/20 rounded-full" />
-              <div className="h-3 w-32 bg-white/5 rounded-full" />
-            </div>
-            <div className="text-[10px] font-mono text-brand-cyan/50 tracking-widest uppercase">
-              Encrypted Socket Active // Code Lens Engine
-            </div>
-          </div>
-        </div>
-
         {/* Feature Grid */}
         <div 
-          className={`grid grid-cols-1 md:grid-cols-3 gap-12 mt-48 w-full transition-all duration-[1500ms] delay-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
+          className={`grid grid-cols-1 md:grid-cols-3 gap-12 mt-32 w-full transition-all duration-[1500ms] delay-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
         >
           {features.map((f, i) => (
             <div key={i} className="p-8 border border-white/5 bg-white/[0.02] rounded-3xl text-left hover:border-brand-cyan/20 transition-all group">
