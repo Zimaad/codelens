@@ -136,10 +136,13 @@ body {
   color: var(--color-text-primary);
   min-height: 100vh;
   line-height: 1.6;
+  /* Prevent any accidental horizontal overflow from shifting the layout */
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* ==========================================================================
@@ -314,7 +317,7 @@ body {
 
 .noise-overlay::after {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   opacity: 0.02;
   pointer-events: none;
