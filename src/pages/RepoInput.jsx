@@ -130,52 +130,55 @@ export default function RepoInput() {
 
       {/* Header Wrapper - Ensuring true center */}
       <div className="w-full relative z-20">
-        <header className="flex items-center justify-between px-12 py-8 w-full max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <svg className="w-8 h-8 text-[#48E5C2]" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
+        <header className="flex items-center px-6 md:px-12 py-8 md:py-10 w-full max-w-7xl mx-auto">
+          {/* Left: Logo */}
+          <div className="flex-1 flex items-center gap-2 md:gap-4">
+            <div className="flex items-center gap-2.5">
+              <svg className="w-6 h-6 md:w-9 md:h-9 text-brand-cyan" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2a10 10 0 0 1 8 4" />
                 <path d="M12 18a6 6 0 0 0 6-6c0-1.65-.67-3.15-1.76-4.24" />
                 <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
               </svg>
-              <span className="text-xl font-bold tracking-tight">CodeLens</span>
+              <span className="text-xl md:text-2xl font-black tracking-tighter font-display uppercase italic">CodeLens</span>
             </div>
-            <span className="bg-[#48E5C2]/20 text-[#48E5C2] text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-[#48E5C2]/30">Beta</span>
+            <span className="bg-brand-cyan/10 text-brand-cyan text-[8px] md:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest border border-brand-cyan/20">Alpha</span>
           </div>
           
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#A1A1AA]">
-            <a className="hover:text-white transition-colors" href="#">Product</a>
-            <a className="hover:text-white transition-colors" href="#">Docs</a>
-            <a className="hover:text-white transition-colors" href="#">Pricing</a>
+          {/* Middle: Centered Nav */}
+          <nav className="hidden lg:flex flex-1 justify-center items-center gap-10 text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500">
+            <a className="hover:text-brand-cyan transition-colors" href="#">Platform</a>
+            <a className="hover:text-brand-cyan transition-colors" href="#">Research</a>
+            <a className="hover:text-brand-cyan transition-colors" href="#">Pricing</a>
           </nav>
-
-          <div className="flex items-center gap-6">
-            <a className="text-sm font-medium text-[#A1A1AA] hover:text-white transition-colors hidden sm:block" href="#">Login</a>
-            <button className="bg-[#48E5C2] text-[#0B1215] text-sm font-bold px-5 py-2.5 rounded hover:bg-opacity-90 transition-all" style={{ boxShadow: '0 0 20px rgba(72, 229, 194, 0.4)' }}>
-              Try CodeLens
+          
+          {/* Right: Actions */}
+          <div className="flex-1 flex items-center justify-end gap-5 md:gap-8">
+            <a className="text-[11px] font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-colors hidden sm:block" href="#">Sign In</a>
+            <button className="bg-brand-cyan text-black text-[10px] md:text-xs font-black uppercase tracking-widest px-4 md:px-7 py-2 md:py-3.5 rounded-full hover:bg-white transition-all shadow-xl shadow-brand-cyan/20">
+              Get Started
             </button>
           </div>
         </header>
       </div>
 
       {/* Hero Container */}
-      <main className="relative z-10 w-full max-w-5xl px-6 py-24 flex flex-col items-center justify-center min-h-[70vh] mx-auto">
+      <main className="relative z-10 w-full max-w-6xl px-8 py-20 md:py-32 flex flex-col items-center justify-center min-h-[65vh] md:min-h-[75vh] mx-auto">
         
-        <div style={{ opacity: mounted ? 1 : 0, transform: mounted ? 'translateY(0)' : 'translateY(20px)', transition: 'all 0.8s ease' }} className="flex flex-col items-center w-full">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1] text-center w-full">
-            Understand <span className="text-[#48E5C2]">any codebase</span> instantly
+        <div style={{ opacity: mounted ? 1 : 0, transform: mounted ? 'translateY(0)' : 'translateY(32px)', transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1)' }} className="flex flex-col items-center w-full">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 md:mb-12 leading-[0.9] text-center w-full px-4 font-display uppercase">
+            Analyze <span className="text-brand-cyan">Source</span> <br className="hidden md:block"/> at scale
           </h1>
-          <p className="text-lg md:text-xl text-[#A1A1AA] max-w-2xl text-center mb-16 leading-relaxed">
-            AI-powered interactive maps, dependency graphs, and chat for GitHub repositories.
+          <p className="text-sm md:text-lg text-zinc-400 max-w-xl text-center mb-12 md:mb-20 leading-relaxed px-6 font-medium tracking-tight">
+            High-fidelity interactive maps, multi-modal dependency graphs, and deconstructed intelligence for any GitHub repository.
           </p>
 
           {/* Form Row */}
-          <div className="w-full max-w-3xl mb-32">
+          <div className="w-full max-w-3xl mb-32 md:mb-56 px-4 md:px-0">
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-              <div className={`relative flex-grow rounded-full border bg-[#0B1215] transition-all duration-300 flex items-center ${isFocused ? 'border-[#48E5C2] shadow-[0_0_20px_rgba(72,229,194,0.2)]' : 'border-[#48E5C2]/30'}`}>
-                <div className="absolute left-6 text-[#A1A1AA]">
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fillRule="evenodd" />
+              <div className={`relative flex-grow rounded-full border bg-black/40 backdrop-blur-xl transition-all duration-500 flex items-center h-14 md:h-16 ${isFocused ? 'border-brand-cyan shadow-2xl shadow-brand-cyan/10' : 'border-white/10'}`}>
+                <div className="absolute left-5 md:left-6 text-zinc-600">
+                  <svg className="h-5 w-5 md:h-6 md:w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                   </svg>
                 </div>
                 <input 
@@ -185,60 +188,71 @@ export default function RepoInput() {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-                  className="w-full bg-transparent border-none text-white pl-20 pr-8 py-5 rounded-full focus:ring-0 placeholder-[#A1A1AA] text-lg outline-none" 
-                  placeholder="https://github.com/owner/repo" 
+                  className="w-full bg-transparent border-none text-white px-12 md:px-14 py-4 rounded-full focus:ring-0 placeholder-zinc-700 text-xs md:text-lg outline-none text-center font-bold tracking-tight" 
+                  placeholder="github.com/owner/repository" 
                 />
               </div>
               <button 
                 onClick={handleSubmit}
-                className="px-10 py-5 bg-[#48E5C2] text-[#0B1215] font-bold text-lg rounded-full flex items-center justify-center gap-3 hover:bg-opacity-90 transition-all shadow-[0_0_30px_rgba(72,229,194,0.4)] whitespace-nowrap leading-none"
+                className="px-8 md:px-10 h-14 md:h-16 bg-brand-cyan text-black font-black text-[10px] md:text-xs uppercase tracking-[0.2em] rounded-full flex items-center justify-center gap-3 hover:bg-white transition-all shadow-2xl shadow-brand-cyan/20 whitespace-nowrap leading-none"
               >
-                Analyze Repository
-                <svg className="w-5 h-5 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
-                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                Launch Analysis
               </button>
             </form>
             {error && (
-              <p className="mt-4 text-red-400 text-sm font-medium text-center animate-fade-in">
+              <p className="mt-6 text-red-500 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] text-center animate-fade-in px-8">
                 {error}
               </p>
             )}
           </div>
         </div>
 
+
         {/* Example Grid */}
-        <div className="w-full mt-12" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.8s ease 0.4s' }}>
-          <div className="flex items-center gap-4 mb-10 justify-center">
-            <div className="h-px bg-white/10 flex-grow max-w-[100px]" />
-            <h2 className="text-xl font-bold text-white uppercase tracking-widest text-center">Try an example</h2>
-            <div className="h-px bg-white/10 flex-grow max-w-[100px]" />
+        <div className="w-full mt-32 md:mt-48" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 1s ease 0.6s' }}>
+          <div className="flex items-center gap-6 mb-12 md:mb-20 justify-center px-8">
+            <div className="h-px bg-white/5 flex-grow max-w-[80px] md:max-w-[140px]" />
+            <h2 className="text-[10px] md:text-xs font-black text-zinc-500 uppercase tracking-[0.3em] text-center">Reference Targets</h2>
+            <div className="h-px bg-white/5 flex-grow max-w-[80px] md:max-w-[140px]" />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 w-full px-4 md:px-0">
             {EXAMPLE_REPOS.map((repo) => (
               <div 
                 key={repo.slug}
                 onClick={() => handleExampleClick(repo.slug)}
-                className="group relative bg-white/[0.02] border border-white/5 rounded-3xl p-10 hover:bg-white/[0.05] hover:border-[#48E5C2]/40 transition-all duration-300 cursor-pointer text-left"
+                className="group relative bg-[#0C1215]/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-8 md:p-10 hover:bg-[#0C1215]/80 hover:border-brand-cyan/30 transition-all duration-500 cursor-pointer text-left overflow-hidden shadow-2xl"
               >
-                <div className="flex items-center gap-3 mb-6">
-                  {repo.icon}
-                  <h3 className="font-bold text-xl tracking-tight">
-                    <span className="text-[#A1A1AA] font-normal">{repo.owner} / </span>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-brand-cyan/15 transition-all duration-700" />
+                
+                <div className="flex items-center gap-4 mb-6 relative z-10">
+                  <div className="p-3 bg-white/5 rounded-2xl group-hover:scale-110 transition-transform duration-500">
+                    {repo.icon}
+                  </div>
+                  <h3 className="font-bold text-xl md:text-2xl tracking-tighter">
+                    <span className="text-zinc-500 font-medium">{repo.owner} / </span>
                     {repo.repo}
                   </h3>
                 </div>
-                <div className="flex flex-wrap gap-2 mb-6">
+                
+                <div className="flex flex-wrap gap-2.5 mb-6 relative z-10">
                   {repo.tags.map(tag => (
-                    <span key={tag} className="text-[9px] font-black tracking-widest bg-[#48E5C2]/10 text-[#48E5C2] px-3 py-1.5 rounded-full border border-[#48E5C2]/20">
+                    <span key={tag} className="text-[9px] font-black tracking-widest bg-brand-cyan/5 text-brand-cyan px-3 py-1.5 rounded-lg border border-brand-cyan/10 uppercase">
                       {tag}
                     </span>
                   ))}
                 </div>
-                <p className="text-[#A1A1AA] text-sm leading-relaxed">
+                
+                <p className="text-zinc-400 text-sm md:text-base leading-relaxed relative z-10 font-medium opacity-60 group-hover:opacity-100 transition-opacity">
                   {repo.desc}
                 </p>
+                
+                <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-cyan">View Intelligence</span>
+                   <svg className="w-4 h-4 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
+                     <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" />
+                   </svg>
+                </div>
               </div>
             ))}
           </div>
@@ -246,19 +260,13 @@ export default function RepoInput() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full relative z-20 border-t border-white/10 mt-20">
-        <div className="max-w-7xl mx-auto px-10 py-12 flex flex-col md:flex-row justify-between items-center text-sm text-[#A1A1AA] font-medium">
-          <div className="flex gap-8 mb-6 md:mb-0">
-            <a className="hover:text-white transition-colors" href="#">Company</a>
-            <a className="hover:text-white transition-colors" href="#">Product</a>
-            <a className="hover:text-white transition-colors" href="#">Resources</a>
-            <a className="hover:text-white transition-colors" href="#">Legal</a>
-          </div>
-          <div>
-            © 2024 CodeLens Inc. · All rights reserved
-          </div>
+      <footer className="w-full relative z-20 border-t border-white/5 mt-32 md:mt-48">
+        <div className="max-w-7xl mx-auto px-12 py-12 md:py-20 flex flex-col items-center text-[10px] md:text-xs text-zinc-500 font-bold tracking-[0.3em] uppercase text-center">
+            © 2024 CodeLens Global Systems • Intelligence at scale
         </div>
       </footer>
+
+
     </div>
   );
 }

@@ -439,12 +439,12 @@ export default function ExploreCodebase() {
 
   // --- Render ---
   return (
-    <div className="flex h-full animate-fade-in" style={{ backgroundColor: 'var(--color-bg-primary)' }}>
+    <div className="flex h-full animate-fade-in bg-[var(--color-bg-primary)]">
       {/* ===== Left: FileTree ===== */}
-      <div
-        className="flex-shrink-0 h-full"
+      <aside
+        className="flex-shrink-0 h-full bg-[#0C1215]/50 backdrop-blur-md"
         style={{
-          width: '260px',
+          width: '280px',
           borderRight: '1px solid var(--color-border-subtle)',
         }}
       >
@@ -453,83 +453,83 @@ export default function ExploreCodebase() {
           onFileSelect={handleTreeFileSelect}
           activeFile={selectedFile}
         />
-      </div>
+      </aside>
 
       {/* ===== Center: Tabbed main area ===== */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Tab bar */}
-        <div className="flex-shrink-0 px-6 pt-5 pb-0">
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h1
-                className="text-lg font-semibold"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  color: 'var(--color-text-primary)',
-                  letterSpacing: '-0.02em',
-                }}
-              >
-                {owner}/{repo}
+      <div className="flex-1 flex flex-col min-w-0 bg-grid">
+        {/* Tab bar / Page Header */}
+        <header className="flex-shrink-0 px-8 py-6 border-b border-white/[0.03]">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <h1 className="text-xl font-bold tracking-tight text-white font-display">
+                {owner}<span className="text-brand-cyan/40 px-1">/</span>{repo}
               </h1>
-              <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>
-                {repoFiles.length} files analyzed · {graphData.edges.length} dependencies mapped
+              <p className="text-xs text-zinc-500 font-medium">
+                {repoFiles.length} files scanned · {graphData.edges.length} relationships mapped
               </p>
             </div>
-            <span
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-wider"
-              style={{
-                backgroundColor: 'rgba(0, 229, 160, 0.06)',
-                color: '#9333ea',
-                border: '1px solid rgba(0, 229, 160, 0.15)',
-                fontFamily: 'var(--font-display)',
-              }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#9333ea' }} />
-              Analyzed
-            </span>
+            
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-cyan/5 text-brand-cyan text-[10px] font-black uppercase tracking-widest border border-brand-cyan/20">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse" />
+                Live Analysis
+              </span>
+            </div>
           </div>
-        </div>
+        </header>
 
         {/* Dynamic content area */}
-        {currentView === 'dependencies' || currentView === 'architecture' ? (
-          <div className="flex-1 p-5" style={{ minHeight: 0 }}>
-            <div className="w-full h-full" style={{ minHeight: '400px' }}>
-              <DependencyGraph
-                nodes={graphData.nodes}
-                edges={graphData.edges}
-                onNodeSelect={handleGraphNodeSelect}
+        <main className="flex-1 relative overflow-hidden">
+          {currentView === 'dependencies' || currentView === 'architecture' ? (
+            <div className="absolute inset-0 p-8">
+              <div className="w-full h-full bg-[#0C1215]/30 rounded-3xl border border-white/5 overflow-hidden">
+                <DependencyGraph
+                  nodes={graphData.nodes}
+                  edges={graphData.edges}
+                  onNodeSelect={handleGraphNodeSelect}
+                />
+              </div>
+            </div>
+          ) : currentView === 'insights' ? (
+            <div className="absolute inset-0">
+              <ChatInterface
+                messages={chatMessages}
+                onSendMessage={handleSendMessage}
+                onNavigateTo={handleChatNavigate}
+                isLoading={chatLoading}
               />
             </div>
-          </div>
-        ) : currentView === 'insights' ? (
-          <div className="flex-1" style={{ minHeight: 0 }}>
-            <ChatInterface
-              messages={chatMessages}
-              onSendMessage={handleSendMessage}
-              onNavigateTo={handleChatNavigate}
-              isLoading={chatLoading}
-            />
-          </div>
-        ) : (
-          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center animate-fade-in" style={{ minHeight: 0 }}>
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, rgba(72, 229, 194,0.1), rgba(99,102,241,0.1))', border: '1px solid rgba(72, 229, 194,0.2)' }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="7" height="7" rx="1" />
-                <rect x="14" y="3" width="7" height="7" rx="1" />
-                <rect x="3" y="14" width="7" height="7" rx="1" />
-                <rect x="14" y="14" width="7" height="7" rx="1" />
-              </svg>
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center animate-fade-in">
+              <div className="w-20 h-20 rounded-[2rem] flex items-center justify-center mb-8 bg-gradient-to-br from-brand-cyan/10 to-brand-indigo/10 border border-brand-cyan/20 shadow-2xl shadow-brand-cyan/5">
+                <svg className="w-8 h-8 text-brand-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                  <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                  <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                  <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold mb-3 text-white font-display tracking-tight">
+                {currentView === 'overview' ? 'Architecture Overview' : 'Codebase Insights'}
+              </h2>
+              <p className="text-sm md:text-base text-zinc-500 max-w-sm mb-8 leading-relaxed">
+                Repository <span className="text-white font-bold">{owner}/{repo}</span> is ready for exploration. 
+                Select a file or use the AI to ask questions.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-4 w-full max-w-md">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/5 transition-colors hover:border-brand-cyan/20">
+                   <div className="text-brand-cyan font-mono text-lg font-bold mb-1">{repoFiles.length}</div>
+                   <div className="text-[10px] text-zinc-600 uppercase tracking-widest font-black">Files</div>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/5 transition-colors hover:border-brand-cyan/20">
+                   <div className="text-brand-cyan font-mono text-lg font-bold mb-1">{graphData.edges.length}</div>
+                   <div className="text-[10px] text-zinc-600 uppercase tracking-widest font-black">Links</div>
+                </div>
+              </div>
             </div>
-            <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
-              {currentView === 'overview' ? 'Repository Overview' : 'File Explorer View'}
-            </h2>
-            <p className="text-sm max-w-sm mb-6" style={{ color: 'var(--color-text-muted)' }}>
-              Repository <strong>{owner}/{repo}</strong> loaded successfully with {repoFiles.length} files.
-              <br/><br/>
-              Select a file from the sidebar to view details, or navigate to Dependencies or AI Insights.
-            </p>
-          </div>
-        )}
+          )}
+        </main>
       </div>
 
       {/* ===== Right: FileDetailPanel ===== */}
@@ -540,6 +540,7 @@ export default function ExploreCodebase() {
         onNavigateTo={handleNavigateTo}
       />
     </div>
+
   );
 }
 

@@ -47,75 +47,47 @@ export default function AnalysisLoading({
   }
 
   return (
-    <div
-      className="noise-overlay min-h-screen flex flex-col relative overflow-hidden"
-      style={{ backgroundColor: 'var(--color-bg-primary)' }}
-    >
+    <div className="noise-overlay min-h-screen flex flex-col relative overflow-hidden bg-[var(--color-bg-primary)]">
       {/* Top progress bar */}
-      <div
-        className="fixed top-0 left-0 right-0 z-50"
-        style={{ height: '2px', backgroundColor: 'rgba(255,255,255,0.03)' }}
-      >
+      <div className="fixed top-0 left-0 right-0 z-50 h-[2px] bg-white/5">
         <div
-          className="h-full transition-all duration-700 ease-out"
-          style={{
-            width: `${progress}%`,
-            background: 'linear-gradient(90deg, #48E5C2, #3178c6)',
-            boxShadow: '0 0 20px rgba(72, 229, 194, 0.4)',
-          }}
+          className="h-full transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(72,229,194,0.4)] bg-gradient-to-r from-[#48E5C2] to-[#3178c6]"
+          style={{ width: `${progress}%` }}
         />
       </div>
 
       {/* Background glow */}
-      <div
-        className="fixed inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(ellipse 600px 400px at 50% 30%, rgba(72, 229, 194, 0.04), transparent),
-            radial-gradient(ellipse 400px 300px at 70% 70%, rgba(99, 102, 241, 0.03), transparent)
-          `,
-        }}
-      />
+      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_600px_400px_at_50%_30%,rgba(72,229,194,0.04),transparent),radial-gradient(ellipse_400px_300px_at_70%_70%,rgba(99,102,241,0.03),transparent)]" />
 
       {/* Center content */}
-      <div className="flex-1 flex items-center justify-center px-6">
+      <div className="flex-1 flex items-center justify-center p-6 md:p-12">
         <div
-          className="relative z-10 w-full max-w-lg"
+          className="relative z-10 w-full max-w-lg transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{
             opacity: mounted ? 1 : 0,
-            transform: mounted ? 'translateY(0)' : 'translateY(16px)',
-            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+            transform: mounted ? 'translateY(0)' : 'translateY(24px)',
           }}
         >
           {/* Spinning orb */}
-          <div className="flex justify-center mb-10">
-            <div className="relative" style={{ width: '80px', height: '80px' }}>
+          <div className="flex justify-center mb-12">
+            <div className="relative w-24 h-24">
               {/* Outer glow ring */}
               <div
-                className="absolute inset-0 rounded-full"
+                className={`absolute inset-0 rounded-full blur-[1px] transition-opacity duration-1000 ${isComplete ? 'opacity-0' : 'opacity-30 animate-spin-slow'}`}
                 style={{
-                  background: `conic-gradient(from 0deg, #48E5C2, #3178c6, #34d399, #48E5C2)`,
-                  opacity: isComplete ? 0 : 0.25,
-                  animation: isComplete ? 'none' : 'spin-slow 2.5s linear infinite',
-                  transition: 'opacity 0.5s ease',
-                  filter: 'blur(1px)',
+                  background: `conic-gradient(from 0deg, #48E5C2, #3178c6, #34d399, #48E5C2)`
                 }}
               />
               {/* Inner circle */}
               <div
-                className="absolute inset-[3px] rounded-full flex items-center justify-center"
-                style={{
-                  backgroundColor: 'var(--color-bg-primary)',
-                  border: isComplete ? '2px solid rgba(0,229,160,0.3)' : '2px solid rgba(72, 229, 194,0.1)',
-                  transition: 'border-color 0.5s ease',
-                }}
+                className={`absolute inset-[4px] rounded-full flex items-center justify-center bg-[var(--color-bg-primary)] transition-all duration-500 border-2 ${isComplete ? 'border-brand-cyan/40 scale-110' : 'border-brand-cyan/10'}`}
               >
                 {isComplete ? (
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-8 h-8 md:w-10 md:h-10 transition-transform duration-500 scale-110" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 ) : (
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="#48E5C2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="16 18 22 12 16 6" />
                     <polyline points="8 6 2 12 8 18" />
                     <line x1="14" y1="4" x2="10" y2="20" />
@@ -124,47 +96,23 @@ export default function AnalysisLoading({
               </div>
               {/* Ambient glow */}
               <div
-                className="absolute inset-0 -z-10"
-                style={{
-                  borderRadius: '50%',
-                  background: 'radial-gradient(circle, rgba(72, 229, 194,0.1) 0%, transparent 70%)',
-                  filter: 'blur(24px)',
-                  transform: 'scale(2.5)',
-                  opacity: isComplete ? 0 : 1,
-                  transition: 'opacity 0.5s ease',
-                }}
+                className={`absolute inset-0 -z-10 rounded-full blur-3xl scale-[2.5] bg-brand-cyan/10 transition-opacity duration-1000 ${isComplete ? 'opacity-0' : 'opacity-100'}`}
               />
             </div>
           </div>
 
           {/* Title */}
-          <h2
-            className="text-center font-semibold mb-1"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '1.4rem',
-              color: 'var(--color-text-primary)',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            {isComplete ? 'Analysis Complete' : 'Analyzing Repository'}
-          </h2>
-          <p
-            className="text-center text-xs font-mono mb-8 truncate px-4"
-            style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}
-          >
-            {repoUrl || 'github.com/example/repo'}
-          </p>
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2 text-white font-display">
+              {isComplete ? 'Analysis Finished' : 'Deconstructing Code'}
+            </h2>
+            <p className="text-[10px] md:text-xs font-mono text-zinc-500 uppercase tracking-[0.2em] truncate px-6">
+              {repoUrl ? repoUrl.replace(/^https?:\/\//, '') : 'github.com/example/repo'}
+            </p>
+          </div>
 
           {/* Steps list */}
-          <div
-            className="rounded-2xl overflow-hidden"
-            style={{
-              backgroundColor: 'rgba(12, 15, 22, 0.5)',
-              border: '1px solid var(--color-border-subtle)',
-              backdropFilter: 'blur(16px)',
-            }}
-          >
+          <div className="bg-[#0C0F16]/40 backdrop-blur-2xl border border-white/5 rounded-[2rem] overflow-hidden shadow-2xl">
             {steps.map((label, index) => {
               const isDone = index < currentStep;
               const isActive = index === currentStep && !isComplete;
@@ -173,75 +121,52 @@ export default function AnalysisLoading({
               return (
                 <div
                   key={index}
-                  className="flex items-center gap-3.5 px-5 py-3.5 transition-all duration-300"
+                  className={`flex items-center gap-5 px-8 py-5 transition-all duration-500 ${isActive ? 'bg-brand-cyan/[0.03]' : 'bg-transparent'} ${index < steps.length - 1 ? 'border-b border-white/[0.03]' : ''}`}
                   style={{
-                    backgroundColor: isActive ? 'rgba(72, 229, 194, 0.04)' : 'transparent',
-                    borderBottom: index < steps.length - 1 ? '1px solid var(--color-border-subtle)' : 'none',
-                    opacity: isPending ? 0.3 : 1,
-                    animation: mounted ? `fadeIn 0.5s ease-out ${index * 120}ms both` : 'none',
+                    opacity: isPending ? 0.2 : 1,
+                    animation: mounted ? `fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${index * 150}ms both` : 'none',
                   }}
                 >
                   {/* Step icon */}
                   <div
-                    className="flex items-center justify-center flex-shrink-0"
-                    style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '8px',
-                      backgroundColor: isDone
-                        ? 'rgba(0, 229, 160, 0.1)'
-                        : isActive
-                        ? 'rgba(72, 229, 194, 0.1)'
-                        : 'rgba(79, 91, 115, 0.1)',
-                      color: isDone
-                        ? '#9333ea'
-                        : isActive
-                        ? '#48E5C2'
-                        : 'var(--color-text-muted)',
-                    }}
+                    className={`flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-xl transition-all duration-500 ${isDone ? 'bg-brand-cyan/10' : isActive ? 'bg-brand-cyan/20' : 'bg-white/5'}`}
                   >
                     {isDone ? (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9333ea" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <svg className="w-5 h-5 text-brand-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     ) : isActive ? (
-                      <div className="relative flex items-center justify-center" style={{ width: '16px', height: '16px' }}>
-                        <svg className="w-4 h-4" viewBox="0 0 24 24" style={{ animation: 'spin-slow 1s linear infinite' }}>
-                          <circle cx="12" cy="12" r="10" fill="none" stroke="rgba(72, 229, 194,0.15)" strokeWidth="2.5" />
-                          <circle cx="12" cy="12" r="10" fill="none" stroke="#48E5C2" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="50 100" />
+                      <div className="relative w-5 h-5">
+                        <svg className="w-5 h-5 animate-spin-slow" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-20" />
+                          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="50 100" />
                         </svg>
                       </div>
                     ) : (
-                      STEP_ICONS[index] || <div className="w-2 h-2 rounded-full" style={{ backgroundColor: 'var(--color-text-muted)', opacity: 0.3 }} />
+                      <div className="opacity-60 grayscale brightness-75 scale-90">
+                        {STEP_ICONS[index] || <div className="w-1.5 h-1.5 rounded-full bg-zinc-600" />}
+                      </div>
                     )}
                   </div>
 
                   {/* Label */}
-                  <span
-                    className="text-sm font-medium flex-1"
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      color: isDone
-                        ? '#9333ea'
-                        : isActive
-                        ? 'var(--color-text-primary)'
-                        : 'var(--color-text-muted)',
-                    }}
-                  >
-                    {label}
-                  </span>
+                  <div className="flex-1">
+                    <span className={`text-sm md:text-base font-bold tracking-tight transition-colors duration-500 font-display ${isDone ? 'text-brand-cyan' : isActive ? 'text-white' : 'text-zinc-500'}`}>
+                      {label}
+                    </span>
+                    {isActive && (
+                      <p className="text-[10px] text-brand-cyan/60 font-mono mt-0.5 animate-pulse uppercase tracking-wider">Processing assets...</p>
+                    )}
+                  </div>
 
                   {/* Active indicator dots */}
                   {isActive && (
-                    <div className="flex gap-1">
+                    <div className="flex gap-1.5">
                       {[0, 1, 2].map((i) => (
                         <div
                           key={i}
-                          className="rounded-full"
+                          className="w-1 h-1 rounded-full bg-brand-cyan"
                           style={{
-                            width: '3px',
-                            height: '3px',
-                            backgroundColor: '#48E5C2',
                             animation: `chatPulse 1.4s ease-in-out ${i * 0.2}s infinite`,
                           }}
                         />
@@ -249,9 +174,9 @@ export default function AnalysisLoading({
                     </div>
                   )}
 
-                  {/* Done checkmark */}
+                  {/* Done status */}
                   {isDone && (
-                    <span className="text-[10px] font-mono" style={{ color: 'rgba(0,229,160,0.5)' }}>done</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-brand-cyan/40">Ready</span>
                   )}
                 </div>
               );
@@ -259,22 +184,23 @@ export default function AnalysisLoading({
           </div>
 
           {/* Bottom bar */}
-          <div className="flex items-center justify-between mt-5 px-1">
-            <span className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>
-              {isComplete ? 'Redirecting…' : `Step ${Math.min(currentStep + 1, totalSteps)} of ${totalSteps}`}
-            </span>
-            <span
-              className="text-sm font-semibold font-mono"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                color: isComplete ? '#9333ea' : '#48E5C2',
-              }}
-            >
-              {Math.round(progress)}%
-            </span>
+          <div className="flex items-center justify-between mt-8 px-4">
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase tracking-[0.2em] font-black text-zinc-600 mb-1">Status</span>
+              <span className="text-xs font-bold text-zinc-400">
+                {isComplete ? 'Complete' : `Step ${Math.min(currentStep + 1, totalSteps)} of ${totalSteps}`}
+              </span>
+            </div>
+            <div className="flex flex-col items-end text-right">
+              <span className="text-[10px] uppercase tracking-[0.2em] font-black text-zinc-600 mb-1">Progress</span>
+              <span className="text-xl font-bold font-mono text-brand-cyan tabular-nums">
+                {Math.round(progress)}%
+              </span>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
   );
 }
