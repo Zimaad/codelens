@@ -103,11 +103,11 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <button 
               onClick={() => navigate('/repoinput')}
-              className="group relative px-12 py-5 bg-brand-cyan text-black font-black text-[11px] uppercase tracking-[0.3em] rounded-full hover:bg-white hover:scale-105 transition-all shadow-2xl shadow-brand-cyan/20 overflow-hidden"
+              className="group relative px-16 py-6 bg-brand-cyan text-black font-black text-[13px] uppercase tracking-[0.3em] rounded-full hover:bg-white hover:scale-105 transition-all shadow-2xl shadow-brand-cyan/20 overflow-hidden"
             >
               <span className="relative z-10">Try it out — Now</span>
             </button>
-            <button className="px-12 py-5 border border-white/5 bg-white/[0.02] backdrop-blur-md rounded-full text-zinc-400 text-[11px] font-black uppercase tracking-[0.3em] hover:text-white hover:border-white/20 transition-all">
+            <button className="px-16 py-6 border border-white/5 bg-white/[0.02] backdrop-blur-md rounded-full text-zinc-400 text-[13px] font-black uppercase tracking-[0.3em] hover:text-white hover:border-white/20 transition-all">
               Read Manifesto
             </button>
           </div>
@@ -115,15 +115,15 @@ export default function Landing() {
 
         {/* Feature Grid */}
         <div 
-          className={`grid grid-cols-1 md:grid-cols-3 gap-12 mt-32 w-full transition-all duration-[1500ms] delay-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
+          className={`grid grid-cols-1 md:grid-cols-3 gap-12 mt-[35rem] w-full transition-all duration-[1500ms] delay-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
         >
           {features.map((f, i) => (
-            <div key={i} className="p-8 border border-white/5 bg-white/[0.02] rounded-3xl text-left hover:border-brand-cyan/20 transition-all group">
-              <div className="mb-6 p-4 border border-white/10 rounded-2xl w-fit group-hover:scale-110 transition-transform">
+            <div key={i} className="p-10 border border-white/5 bg-white/[0.02] rounded-3xl text-center items-center hover:border-brand-cyan/20 transition-all group aspect-[16/10] flex flex-col justify-center">
+              <div className="mb-6 p-4 border border-white/10 rounded-2xl w-fit group-hover:scale-110 transition-transform mx-auto">
                 {f.icon}
               </div>
               <h3 className="text-xl font-black uppercase tracking-tight mb-4 font-display">{f.title}</h3>
-              <p className="text-zinc-500 font-medium leading-relaxed group-hover:text-zinc-300 transition-colors">
+              <p className="text-zinc-500 font-medium leading-relaxed group-hover:text-zinc-300 transition-colors max-w-[85%]">
                 {f.description}
               </p>
             </div>
@@ -134,7 +134,7 @@ export default function Landing() {
       {/* Footer */}
       <footer className="mt-auto border-t border-white/5 py-12 px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] text-zinc-600 font-black uppercase tracking-widest">
-          <div>© 2024 CodeLens Labs. All rights reserved.</div>
+          <div>© 2026 CodeLens Labs. All rights reserved.</div>
           <div className="flex gap-8">
             <a href="#" className="hover:text-brand-cyan">Privacy</a>
             <a href="#" className="hover:text-brand-cyan">Security</a>

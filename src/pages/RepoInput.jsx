@@ -141,15 +141,7 @@ export default function RepoInput() {
               </svg>
               <span className="text-xl md:text-2xl font-black tracking-tighter font-display uppercase italic">CodeLens</span>
             </div>
-            <span className="bg-brand-cyan/10 text-brand-cyan text-[8px] md:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest border border-brand-cyan/20">Alpha</span>
           </div>
-          
-          {/* Middle: Centered Nav */}
-          <nav className="hidden lg:flex flex-1 justify-center items-center gap-10 text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500">
-            <a className="hover:text-brand-cyan transition-colors" href="#">Platform</a>
-            <a className="hover:text-brand-cyan transition-colors" href="#">Research</a>
-            <a className="hover:text-brand-cyan transition-colors" href="#">Pricing</a>
-          </nav>
           
           {/* Right: Actions */}
           <div className="flex-1 flex items-center justify-end gap-5 md:gap-8">
@@ -209,7 +201,7 @@ export default function RepoInput() {
 
 
         {/* Example Grid */}
-        <div className="w-full mt-32 md:mt-48" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 1s ease 0.6s' }}>
+        <div className="w-full mt-48 md:mt-72" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 1s ease 0.6s' }}>
           <div className="flex items-center gap-6 mb-12 md:mb-20 justify-center px-8">
             <div className="h-px bg-white/5 flex-grow max-w-[80px] md:max-w-[140px]" />
             <h2 className="text-[10px] md:text-xs font-black text-zinc-500 uppercase tracking-[0.3em] text-center">Reference Targets</h2>
@@ -221,21 +213,21 @@ export default function RepoInput() {
               <div 
                 key={repo.slug}
                 onClick={() => handleExampleClick(repo.slug)}
-                className="group relative bg-[#0C1215]/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-8 md:p-10 hover:bg-[#0C1215]/80 hover:border-brand-cyan/30 transition-all duration-500 cursor-pointer text-left overflow-hidden shadow-2xl"
+                className="group relative bg-[#0C1215]/40 backdrop-blur-2xl border border-white/5 rounded-3xl p-10 hover:bg-[#0C1215]/80 hover:border-brand-cyan/30 transition-all duration-500 cursor-pointer text-center overflow-hidden shadow-2xl md:aspect-[3/2] flex flex-col items-center justify-center"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-brand-cyan/15 transition-all duration-700" />
                 
-                <div className="flex items-center gap-4 mb-6 relative z-10">
-                  <div className="p-3 bg-white/5 rounded-2xl group-hover:scale-110 transition-transform duration-500">
+                <div className="flex flex-col items-center gap-4 mb-6 relative z-10 w-full">
+                  <div className="p-3 bg-white/5 rounded-2xl group-hover:scale-110 transition-transform duration-500 w-fit">
                     {repo.icon}
                   </div>
                   <h3 className="font-bold text-xl md:text-2xl tracking-tighter">
-                    <span className="text-zinc-500 font-medium">{repo.owner} / </span>
+                    <span className="text-zinc-500 font-medium block text-sm mb-1 uppercase tracking-widest">{repo.owner}</span>
                     {repo.repo}
                   </h3>
                 </div>
                 
-                <div className="flex flex-wrap gap-2.5 mb-6 relative z-10">
+                <div className="flex flex-wrap gap-2.5 mb-6 relative z-10 justify-center">
                   {repo.tags.map(tag => (
                     <span key={tag} className="text-[9px] font-black tracking-widest bg-brand-cyan/5 text-brand-cyan px-3 py-1.5 rounded-lg border border-brand-cyan/10 uppercase">
                       {tag}
@@ -243,11 +235,11 @@ export default function RepoInput() {
                   ))}
                 </div>
                 
-                <p className="text-zinc-400 text-sm md:text-base leading-relaxed relative z-10 font-medium opacity-60 group-hover:opacity-100 transition-opacity">
+                <p className="text-zinc-400 text-sm md:text-base leading-relaxed relative z-10 font-medium opacity-60 group-hover:opacity-100 transition-opacity max-w-[90%] mx-auto">
                   {repo.desc}
                 </p>
                 
-                <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 w-full absolute bottom-8 px-10">
                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-cyan">View Intelligence</span>
                    <svg className="w-4 h-4 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
                      <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" />
@@ -262,7 +254,7 @@ export default function RepoInput() {
       {/* Footer */}
       <footer className="w-full relative z-20 border-t border-white/5 mt-32 md:mt-48">
         <div className="max-w-7xl mx-auto px-12 py-12 md:py-20 flex flex-col items-center text-[10px] md:text-xs text-zinc-500 font-bold tracking-[0.3em] uppercase text-center">
-            © 2024 CodeLens Global Systems • Intelligence at scale
+            © 2026 CodeLens Global Systems • Intelligence at scale
         </div>
       </footer>
 
