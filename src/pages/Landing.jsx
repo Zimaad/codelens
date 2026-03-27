@@ -50,17 +50,20 @@ export default function Landing() {
       </div>
 
       {/* Header */}
-      <header className="flex items-center px-8 md:px-12 py-8 w-full max-w-7xl mx-auto relative z-20">
-        <div className="flex-1 flex items-center gap-3">
-          <svg className="w-8 h-8 text-brand-cyan" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2a10 10 0 0 1 8 4" />
-            <path d="M12 18a6 6 0 0 0 6-6c0-1.65-.67-3.15-1.76-4.24" />
-            <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-          </svg>
-          <span className="text-2xl font-black tracking-tighter uppercase italic font-display">CodeLens</span>
+      <header className="flex items-center px-6 md:px-12 py-12 md:py-16 w-full relative z-20">
+        {/* Left: Logo */}
+        <div className="flex-1 flex items-center gap-3 md:gap-5">
+          <div className="flex items-center gap-4">
+            <svg className="w-6 h-6 md:w-9 md:h-9 text-brand-cyan" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2a10 10 0 0 1 8 4" />
+              <path d="M12 18a6 6 0 0 0 6-6c0-1.65-.67-3.15-1.76-4.24" />
+              <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+            </svg>
+            <span className="text-xl md:text-2xl font-black tracking-tighter font-display uppercase italic">CodeLens</span>
+          </div>
         </div>
         
-        <nav className="hidden md:flex gap-10 text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500">
+        <nav className="hidden md:flex gap-10 text-xs md:text-sm font-black uppercase tracking-[0.2em] text-zinc-500">
           <a className="hover:text-brand-cyan transition-colors" href="#">Manifesto</a>
           <a className="hover:text-brand-cyan transition-colors" href="#">Intelligence</a>
           <a className="hover:text-brand-cyan transition-colors" href="#">Network</a>
@@ -69,7 +72,7 @@ export default function Landing() {
         <div className="flex-1 flex justify-end">
           <button 
             onClick={() => navigate('/repoinput')}
-            className="text-[11px] font-black uppercase tracking-widest px-6 py-3 border border-white/10 rounded-full hover:border-brand-cyan/50 hover:bg-brand-cyan/5 transition-all"
+            className="text-[11px] md:text-sm font-black uppercase tracking-widest px-6 md:px-10 py-3 md:py-4.5 border border-white/10 rounded-full hover:border-brand-cyan/50 hover:bg-brand-cyan/5 transition-all shadow-xl shadow-brand-cyan/5"
           >
             Terminal Access
           </button>
