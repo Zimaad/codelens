@@ -217,8 +217,8 @@ export default function RepoInput() {
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-brand-cyan/15 transition-all duration-700 pointer-events-none" />
                 
-                <div className="flex-grow flex flex-col items-center justify-center w-full relative z-10">
-                  <div className="flex flex-col items-center gap-4 mb-6 w-full">
+                <div className="flex-grow flex flex-col items-center justify-center w-full relative z-10 -mt-4">
+                  <div className="flex flex-col items-center gap-4 mb-5 w-full">
                     <div className="p-3 bg-white/5 rounded-2xl group-hover:scale-110 transition-transform duration-500 w-fit">
                       {repo.icon}
                     </div>
@@ -228,20 +228,20 @@ export default function RepoInput() {
                     </h3>
                   </div>
                   
-                  <div className="flex flex-wrap gap-2.5 mb-6 justify-center">
+                  <div className="flex flex-wrap gap-2 mb-5 justify-center">
                     {repo.tags.map(tag => (
-                      <span key={tag} className="text-[9px] font-black tracking-widest bg-brand-cyan/5 text-brand-cyan px-3 py-1.5 rounded-lg border border-brand-cyan/10 uppercase">
+                      <span key={tag} className="text-[9px] font-black tracking-widest bg-brand-cyan/5 text-brand-cyan px-2.5 py-1 rounded-lg border border-brand-cyan/10 uppercase">
                         {tag}
                       </span>
                     ))}
                   </div>
                   
-                  <p className="text-zinc-400 text-sm md:text-base leading-relaxed font-medium opacity-60 group-hover:opacity-100 transition-opacity max-w-[90%] mx-auto">
+                  <p className="text-zinc-400 text-xs md:text-sm leading-relaxed font-medium opacity-60 group-hover:opacity-100 transition-opacity max-w-[90%] mx-auto">
                     {repo.desc}
                   </p>
                 </div>
                 
-                <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 w-full relative z-10 px-2">
+                <div className="absolute bottom-10 left-0 right-0 flex items-center justify-center gap-2.5 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 w-full relative z-10">
                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-cyan">View Intelligence</span>
                    <svg className="w-4 h-4 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
                      <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" />

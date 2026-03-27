@@ -29,9 +29,9 @@ export function GlobePulse({
   // Perf knobs:
   // - `visualScale` reduces visible size by 30% (matches your request).
   // - `internalRenderScale` reduces canvas internal resolution to cut CPU/GPU load.
-  const visualScale = 0.7;
+  const visualScale = 0.6;
   const internalRenderScale = 0.75;
-  const targetFps = 30;
+  const targetFps = 60;
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const pointerInteracting = useRef<{ x: number; y: number } | null>(null);
