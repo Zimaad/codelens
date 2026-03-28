@@ -62,7 +62,7 @@ export default function Landing() {
             <span className="text-xl md:text-2xl font-black tracking-tighter font-display uppercase italic">CodeLens</span>
           </div>
         </div>
-        
+
         <nav className="hidden md:flex gap-10 text-xs md:text-sm font-black uppercase tracking-[0.2em] text-zinc-500">
           <a className="hover:text-brand-cyan transition-colors" href="#">Manifesto</a>
           <a className="hover:text-brand-cyan transition-colors" href="#">Intelligence</a>
@@ -70,7 +70,7 @@ export default function Landing() {
         </nav>
 
         <div className="flex-1 flex justify-end">
-          <button 
+          <button
             onClick={() => navigate('/repoinput')}
             className="text-[11px] md:text-sm font-black uppercase tracking-widest px-6 md:px-10 py-3 md:py-4.5 border border-white/10 rounded-full hover:border-brand-cyan/50 hover:bg-brand-cyan/5 transition-all shadow-xl shadow-brand-cyan/5"
           >
@@ -81,7 +81,7 @@ export default function Landing() {
 
       {/* Hero */}
       <main className="relative z-10 w-full max-w-7xl px-8 pt-32 pb-20 md:pt-48 md:pb-32 flex flex-col items-center mx-auto text-center min-h-screen">
-        <div 
+        <div
           className={`transition-all duration-[1500ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'} flex flex-col items-center`}
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-12 border border-brand-cyan/20 rounded-full bg-brand-cyan/5 backdrop-blur-md">
@@ -91,20 +91,20 @@ export default function Landing() {
             </span>
             <span className="text-brand-cyan text-[11px] font-black uppercase tracking-[0.3em]">System Status: v1.0.4 Online</span>
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl lg:text-[7rem] font-bold tracking-tighter leading-[1.1] uppercase mb-12 font-display">
-            The World's <br/>
-            Next <span className="text-brand-cyan italic">Gen</span> <br/>
-            Engine  
+            The World's <br />
+            Next <span className="text-brand-cyan italic">Gen</span> <br />
+            Engine
           </h1>
 
           <p className="text-base md:text-lg lg:text-xl text-zinc-500 max-w-3xl mx-auto mb-20 font-medium leading-relaxed tracking-tight">
-            Advanced codebase intelligence for engineers. Deconstruct, analyze, 
+            Advanced codebase intelligence for engineers. Deconstruct, analyze,
             and visualize complex systems at the speed of thought.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <button 
+            <button
               onClick={() => navigate('/repoinput')}
               className="group relative px-16 py-6 bg-brand-cyan text-black font-black text-[13px] uppercase tracking-[0.3em] rounded-full hover:bg-white hover:scale-105 transition-all shadow-2xl shadow-brand-cyan/20 overflow-hidden"
             >
@@ -117,11 +117,11 @@ export default function Landing() {
         </div>
 
         {/* Feature Grid */}
-        <div 
+        <div
           className={`grid grid-cols-1 md:grid-cols-3 gap-12 mt-[35rem] w-full transition-all duration-[1500ms] delay-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
         >
           {features.map((f, i) => (
-            <div key={i} className="p-10 border border-white/5 bg-white/[0.02] rounded-3xl text-center items-center hover:border-brand-cyan/20 transition-all group aspect-[16/10] flex flex-col justify-center">
+            <div key={i} className={`p-10 border border-white/5 bg-white/[0.02] rounded-3xl text-center items-center hover:border-brand-cyan/20 transition-ui group aspect-[16/10] flex flex-col justify-center stagger-child stagger-${i + 1}`} style={{ opacity: mounted ? 1 : 0, animationDelay: mounted ? `${150 + i * 80}ms` : '0ms' }}>
               <div className="mb-6 p-4 border border-white/10 rounded-2xl w-fit group-hover:scale-110 transition-transform mx-auto">
                 {f.icon}
               </div>

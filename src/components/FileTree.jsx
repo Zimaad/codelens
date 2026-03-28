@@ -128,14 +128,12 @@ function DirectoryNode({ name, node, depth, onFileSelect, activeFile, searchQuer
     <div>
       {name && (
         <button
-          className="w-full flex items-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium cursor-pointer transition-colors duration-100"
+          className="w-full flex items-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium cursor-pointer transition-interactive tree-button"
           style={{
             paddingLeft: `${depth * 12 + 8}px`,
             color: 'var(--color-text-secondary)',
             fontFamily: 'var(--font-display)',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--color-bg-hover)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
           onClick={() => setIsOpen(!isOpen)}
         >
           <Chevron open={isOpen} />
@@ -179,24 +177,12 @@ function FileNode({ file, depth, onFileSelect, isActive }) {
   return (
     <Tooltip text={file.summary}>
       <button
-        className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs cursor-pointer transition-all duration-100"
+        className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs cursor-pointer transition-interactive file-node ${isActive ? 'file-node-active' : 'file-node-inactive'}`}
         style={{
           paddingLeft: `${depth * 12 + 20}px`,
           backgroundColor: isActive ? 'rgba(72, 229, 194, 0.06)' : 'transparent',
           color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
           borderLeft: isActive ? '2px solid #48E5C2' : '2px solid transparent',
-        }}
-        onMouseEnter={(e) => {
-          if (!isActive) {
-            e.currentTarget.style.backgroundColor = 'var(--color-bg-hover)';
-            e.currentTarget.style.color = 'var(--color-text-primary)';
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!isActive) {
-            e.currentTarget.style.backgroundColor = 'transparent';
-            e.currentTarget.style.color = 'var(--color-text-secondary)';
-          }
         }}
         onClick={() => onFileSelect?.(file)}
       >

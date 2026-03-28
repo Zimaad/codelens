@@ -87,25 +87,17 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
       {isEmpty && !isLoading && (
         <div className="px-5 pb-3">
           <div className="flex flex-wrap gap-2 justify-center">
-            {STARTER_QUESTIONS.map((q) => (
+            {STARTER_QUESTIONS.map((q, i) => (
               <button
                 key={q}
-                className="px-3.5 py-2 rounded-xl text-[11px] font-medium transition-all duration-200 cursor-pointer"
+                className="px-3.5 py-2 rounded-xl text-[11px] font-medium transition-ui cursor-pointer stagger-child"
                 style={{
                   fontFamily: 'var(--font-display)',
                   backgroundColor: 'var(--color-bg-secondary)',
                   color: 'var(--color-text-secondary)',
                   border: '1px solid var(--color-border-subtle)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(72, 229, 194,0.25)';
-                  e.currentTarget.style.color = '#48E5C2';
-                  e.currentTarget.style.backgroundColor = 'rgba(72, 229, 194,0.04)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--color-border-subtle)';
-                  e.currentTarget.style.color = 'var(--color-text-secondary)';
-                  e.currentTarget.style.backgroundColor = 'var(--color-bg-secondary)';
+                  animationDelay: `${i * 40}ms`,
+                  opacity: 0,
                 }}
                 onClick={() => handleChipClick(q)}
               >
@@ -163,16 +155,8 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
               {/* Attach button */}
               <button
                 type="button"
-                className="p-2 rounded-lg transition-all duration-150 cursor-pointer relative group"
+                className="p-2 rounded-lg transition-ui cursor-pointer relative group tool-button"
                 style={{ color: 'rgba(255, 255, 255, 0.35)' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)';
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.35)';
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
                 title="Attach file"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -182,16 +166,8 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
               {/* Command button */}
               <button
                 type="button"
-                className="p-2 rounded-lg transition-all duration-150 cursor-pointer relative group"
+                className="p-2 rounded-lg transition-ui cursor-pointer relative group tool-button"
                 style={{ color: 'rgba(255, 255, 255, 0.35)' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)';
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.35)';
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
                 title="Commands"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -204,7 +180,7 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
             <button
               id="chat-send"
               type="button"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-ui cursor-pointer send-button"
               style={{
                 fontFamily: 'var(--font-display)',
                 backgroundColor: canSend ? '#48E5C2' : 'rgba(255, 255, 255, 0.05)',
@@ -213,18 +189,6 @@ export default function ChatInterface({ messages = [], onSendMessage, onNavigate
               }}
               disabled={!canSend}
               onClick={handleSend}
-              onMouseEnter={(e) => {
-                if (canSend) {
-                  e.currentTarget.style.boxShadow = '0 6px 24px rgba(72, 229, 194, 0.25)';
-                  e.currentTarget.style.transform = 'scale(1.02)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (canSend) {
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(72, 229, 194, 0.15)';
-                  e.currentTarget.style.transform = 'scale(1)';
-                }
-              }}
               title="Send (Enter)"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -268,19 +232,19 @@ function MessageBubble({ message, onNavigateTo }) {
           style={
             isUser
               ? {
-                  background: 'linear-gradient(135deg, rgba(72, 229, 194,0.12), rgba(99,102,241,0.12))',
-                  color: 'var(--color-text-primary)',
-                  border: '1px solid rgba(72, 229, 194,0.15)',
-                  borderBottomRightRadius: '4px',
-                  fontFamily: 'var(--font-display)',
-                }
+                background: 'linear-gradient(135deg, rgba(72, 229, 194,0.12), rgba(99,102,241,0.12))',
+                color: 'var(--color-text-primary)',
+                border: '1px solid rgba(72, 229, 194,0.15)',
+                borderBottomRightRadius: '4px',
+                fontFamily: 'var(--font-display)',
+              }
               : {
-                  backgroundColor: 'var(--color-bg-secondary)',
-                  color: 'var(--color-text-secondary)',
-                  border: '1px solid var(--color-border-subtle)',
-                  borderBottomLeftRadius: '4px',
-                  fontFamily: 'var(--font-display)',
-                }
+                backgroundColor: 'var(--color-bg-secondary)',
+                color: 'var(--color-text-secondary)',
+                border: '1px solid var(--color-border-subtle)',
+                borderBottomLeftRadius: '4px',
+                fontFamily: 'var(--font-display)',
+              }
           }
         >
           {message.text.split('\n').map((line, i) => (
