@@ -25,3 +25,4 @@ dist-ssr
 .env
 agent skills/
 .agents
+.agents/skills/design-engineering
